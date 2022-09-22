@@ -1,14 +1,12 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import { Button } from "@chakra-ui/react";
-
+import Filtros from "../components/Filtros/Filtros";
+import TablaPrincipal from "../components/TablaPrincipal/TablaPrincipal";
+import NuevoPrecio from "../components/NuevoPrecio/NuevoPrecio";
 export default function Home() {
   return (
-    <div>
-      <Button colorScheme="red">
-        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      </Button>
-    </div>
+    <>
+      <Filtros />
+      <TablaPrincipal />
+      <NuevoPrecio />
+    </>
   );
 }
