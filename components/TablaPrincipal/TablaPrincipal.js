@@ -1,83 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Tabla from "react-data-table-component";
 import { Box } from "@chakra-ui/react";
-const TablaPrincipal = () => {
+import Moment from "moment";
+import { estiloTablas } from "../estiloTablas";
+const TablaPrincipal = ({ infoConceptos }) => {
   const columns = [
     {
-      name: "Concepto",
-      selector: (row) => row.concepto,
-      sortable: true,
-    },
-    {
       name: "Fecha Inicio",
-      selector: (row) => row.fechaInicio,
+      selector: (row) =>
+        Moment(row.FechaInicioVigenciaPrecio).format("DD-MM-YYYY"),
       sortable: true,
     },
     {
       name: "Fecha Fin",
-      selector: (row) => row.fechaFin,
+      selector: (row) =>
+        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-YYYY"),
       sortable: true,
     },
     {
       name: "1º Vto",
-      selector: (row) => row.montoPrimerVencimiento,
+      selector: (row) => row.PrecioVto1,
     },
     {
       name: "2º Vto",
-      selector: (row) => row.montoSegundoVencimiento,
+      selector: (row) => row.PrecioVto2,
     },
     {
       name: "3º Vto",
-      selector: (row) => row.montoTercerVencimiento,
+      selector: (row) => row.PrecioVto3,
     },
   ];
 
-  var data = [
-    {
-      concepto: "Matricula",
-      fechaInicio: " 20/20/2021",
-      fechaFin: "20/23/2036",
-      montoPrimerVencimiento: "10.000",
-      montoSegundoVencimiento: "20.000",
-      montoTercerVencimiento: "30.000",
-    },
-    {
-      concepto: "con 1",
-      fechaInicio: " 20/20/2021",
-      fechaFin: "20/23/2036",
-      montoPrimerVencimiento: "10.000",
-      montoSegundoVencimiento: "20.000",
-      montoTercerVencimiento: "30.000",
-    },
-    {
-      concepto: "con 1",
-      fechaInicio: " 20/20/2021",
-      fechaFin: "20/23/2036",
-      montoPrimerVencimiento: "10.000",
-      montoSegundoVencimiento: "20.000",
-      montoTercerVencimiento: "30.000",
-    },
-    {
-      concepto: "con 1",
-      fechaInicio: " 20/20/2021",
-      fechaFin: "20/23/2036",
-      montoPrimerVencimiento: "10.000",
-      montoSegundoVencimiento: "20.000",
-      montoTercerVencimiento: "30.000",
-    },
-    {
-      concepto: "con 1",
-      fechaInicio: " 20/20/2021",
-      fechaFin: "20/23/2036",
-      montoPrimerVencimiento: "10.000",
-      montoSegundoVencimiento: "20.000",
-      montoTercerVencimiento: "30.000",
-    },
-  ];
   return (
     <>
       <Box w="80%" mx="auto" mt={4}>
-        <Tabla columns={columns} data={data} defaultSortFieldId={1} />
+        <Tabla
+          columns={columns}
+          data={infoConceptos}
+          defaultSortFieldId={1}
+          customStyles={estiloTablas}
+          noDataComponent="Sin conceptos"
+        />
       </Box>
     </>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   FormControl,
@@ -8,7 +8,39 @@ import {
   Stack,
   Button,
 } from "@chakra-ui/react";
-const Filtros = () => {
+import clienteAxios from "../../config/axios";
+
+const Filtros = ({ setInfoConceptos }) => {
+  const [datosSedes, setDatosSedes] = useState([]);
+
+  useEffect(() => {
+    traerSedes();
+  }, []);
+
+  const traerSedes = () => {
+    clienteAxios
+      .get("/sedes")
+      .then((respuesta) => {
+        console.log(respuesta.data);
+        setDatosSedes(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const traerInfoConceptos = () => {
+    traerSedes();
+    clienteAxios
+      .get("/conceptos")
+      .then((respuesta) => {
+        setInfoConceptos(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Stack
@@ -23,10 +55,11 @@ const Filtros = () => {
         <FormControl>
           <FormLabel fontSize={14}>Sede</FormLabel>
           <Select size="sm">
-            <option>JUJUY</option>
-            <option>RAFAELA</option>
-            <option>OLIVOS</option>
-            <option>SANTIAGO</option>
+            {datosSedes.map(({ idSede, Nombre }) => (
+              <option key={idSede} value={idSede} style={{ color: "black" }}>
+                {Nombre}
+              </option>
+            ))}
           </Select>
         </FormControl>
         <FormControl>
@@ -57,7 +90,14 @@ const Filtros = () => {
           </Select>
         </FormControl>
         <Box>
-          <Button colorScheme="green" mt={7} size="xs" w="100px" h="35px">
+          <Button
+            colorScheme="green"
+            mt={7}
+            size="xs"
+            w="100px"
+            h="35px"
+            onClick={traerInfoConceptos}
+          >
             Buscar
           </Button>
         </Box>
