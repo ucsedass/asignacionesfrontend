@@ -3,12 +3,12 @@ import Filtros from "../components/Filtros/Filtros";
 import TablaPrincipal from "../components/TablaPrincipal/TablaPrincipal";
 import NuevoPrecio from "../components/NuevoPrecio/NuevoPrecio";
 export default function Home() {
-  const [infoConceptos, setInfoConceptos] = useState([]);
+  const [infoFechasVencimientos, setInfoFechasVencimientos] = useState([]);
 
   return (
     <>
-      <Filtros setInfoConceptos={setInfoConceptos} />
-      <TablaPrincipal infoConceptos={infoConceptos} />
+      <Filtros setInfoFechasVencimientos={setInfoFechasVencimientos} />
+      <TablaPrincipal infoFechasVencimientos={infoFechasVencimientos} />
       <NuevoPrecio />
     </>
   );

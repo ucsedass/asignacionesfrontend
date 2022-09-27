@@ -10,12 +10,37 @@ import {
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 
-const Filtros = ({ setInfoConceptos }) => {
+const Filtros = ({ setInfoFechasVencimientos }) => {
   const [datosSedes, setDatosSedes] = useState([]);
-
+  const [datosConceptos, setDatosConceptos] = useState([]);
+  const [datosTipoConceptos, setDatosTipoConceptos] = useState([]);
   useEffect(() => {
     traerSedes();
   }, []);
+
+  const traerConceptos = () => {
+    clienteAxios
+      .get("/conceptos")
+      .then((respuesta) => {
+        console.log(respuesta.data);
+        setDatosConceptos(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const traerTipoConceptos = () => {
+    clienteAxios
+      .get("/tipoconceptos")
+      .then((respuesta) => {
+        console.log(respuesta.data);
+        setDatosTipoConceptos(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const traerSedes = () => {
     clienteAxios
@@ -29,12 +54,14 @@ const Filtros = ({ setInfoConceptos }) => {
       });
   };
 
-  const traerInfoConceptos = () => {
+  const traerFechasVencimientos = () => {
     traerSedes();
+    traerConceptos();
+    traerTipoConceptos();
     clienteAxios
-      .get("/conceptos")
+      .get("/fechasvencimientos")
       .then((respuesta) => {
-        setInfoConceptos(respuesta.data);
+        setInfoFechasVencimientos(respuesta.data);
       })
       .catch((error) => {
         console.log(error);
@@ -56,7 +83,11 @@ const Filtros = ({ setInfoConceptos }) => {
           <FormLabel fontSize={14}>Sede</FormLabel>
           <Select size="sm">
             {datosSedes.map(({ idSede, Nombre }) => (
-              <option key={idSede} value={idSede} style={{ color: "black" }}>
+              <option
+                key={idSede + Nombre}
+                value={idSede}
+                style={{ color: "black" }}
+              >
                 {Nombre}
               </option>
             ))}
@@ -74,19 +105,31 @@ const Filtros = ({ setInfoConceptos }) => {
         <FormControl>
           <FormLabel fontSize={14}>Tipo concepto</FormLabel>
           <Select size="sm">
-            <option>Matricula</option>
-            <option>Ingreso</option>
-            <option>Cuota</option>
-            <option>Posgrado</option>
+            {datosTipoConceptos.map(
+              ({ idTipoConcepto, DescripcionTipoConcepto }) => (
+                <option
+                  key={idTipoConcepto}
+                  value={idTipoConcepto}
+                  style={{ color: "black" }}
+                >
+                  {DescripcionTipoConcepto}
+                </option>
+              )
+            )}
           </Select>
         </FormControl>
         <FormControl>
           <FormLabel fontSize={14}>Concepto</FormLabel>
           <Select size="sm">
-            <option>concepto 1</option>
-            <option>concepto 2</option>
-            <option>concepto 3</option>
-            <option>concepto 4</option>
+            {datosConceptos.map(({ idConcepto, DescripcionConcepto }) => (
+              <option
+                key={idConcepto}
+                value={idConcepto}
+                style={{ color: "black" }}
+              >
+                {DescripcionConcepto}
+              </option>
+            ))}
           </Select>
         </FormControl>
         <Box>
@@ -96,7 +139,7 @@ const Filtros = ({ setInfoConceptos }) => {
             size="xs"
             w="100px"
             h="35px"
-            onClick={traerInfoConceptos}
+            onClick={traerFechasVencimientos}
           >
             Buscar
           </Button>

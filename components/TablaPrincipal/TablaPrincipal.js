@@ -3,7 +3,7 @@ import Tabla from "react-data-table-component";
 import { Box } from "@chakra-ui/react";
 import Moment from "moment";
 import { estiloTablas } from "../estiloTablas";
-const TablaPrincipal = ({ infoConceptos }) => {
+const TablaPrincipal = ({ infoFechasVencimientos }) => {
   const columns = [
     {
       name: "Fecha Inicio",
@@ -36,7 +36,7 @@ const TablaPrincipal = ({ infoConceptos }) => {
       <Box w="80%" mx="auto" mt={4}>
         <Tabla
           columns={columns}
-          data={infoConceptos}
+          data={infoFechasVencimientos}
           defaultSortFieldId={1}
           customStyles={estiloTablas}
           noDataComponent="Sin conceptos"
