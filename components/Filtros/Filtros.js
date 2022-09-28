@@ -14,15 +14,19 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([]);
   const [datosTipoConceptos, setDatosTipoConceptos] = useState([]);
+  const [valorCodConcepto, setValorCodConcepto] = useState(0);
+  const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
+  const [valorIdSede, setValorIdSede] = useState(0);
   useEffect(() => {
     traerSedes();
+    traerConceptos();
+    traerTipoConceptos();
   }, []);
 
   const traerConceptos = () => {
     clienteAxios
       .get("/conceptos")
       .then((respuesta) => {
-        console.log(respuesta.data);
         setDatosConceptos(respuesta.data);
       })
       .catch((error) => {
@@ -34,7 +38,6 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
     clienteAxios
       .get("/tipoconceptos")
       .then((respuesta) => {
-        console.log(respuesta.data);
         setDatosTipoConceptos(respuesta.data);
       })
       .catch((error) => {
@@ -46,7 +49,6 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
     clienteAxios
       .get("/sedes")
       .then((respuesta) => {
-        console.log(respuesta.data);
         setDatosSedes(respuesta.data);
       })
       .catch((error) => {
@@ -55,11 +57,14 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
   };
 
   const traerFechasVencimientos = () => {
-    traerSedes();
-    traerConceptos();
-    traerTipoConceptos();
-    clienteAxios
-      .get("/fechasvencimientos")
+    clienteAxios("/fechasvencimientos", {
+      method: "POST",
+      data: {
+        codConcepto: valorCodConcepto,
+        codTipoConcepto: valorCodTipoConcepto,
+        idSede: valorIdSede,
+      },
+    })
       .then((respuesta) => {
         setInfoFechasVencimientos(respuesta.data);
       })
@@ -81,14 +86,18 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
       >
         <FormControl>
           <FormLabel fontSize={14}>Sede</FormLabel>
-          <Select size="sm">
+          <Select
+            size="sm"
+            name="idSede"
+            id="idSede"
+            onChange={(e) => {
+              setValorIdSede(e.target.value);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
             {datosSedes.map(({ idSede, Nombre }) => (
-              <option
-                key={idSede + Nombre}
-                value={idSede}
-                style={{ color: "black" }}
-              >
-                {Nombre}
+              <option key={idSede} value={idSede} style={{ color: "black" }}>
+                {idSede + " | " + Nombre}
               </option>
             ))}
           </Select>
@@ -104,15 +113,23 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
         </FormControl>
         <FormControl>
           <FormLabel fontSize={14}>Tipo concepto</FormLabel>
-          <Select size="sm">
+          <Select
+            size="sm"
+            name="codTipoConcepto"
+            id="codTipoConcepto"
+            onChange={(e) => {
+              setValorCodTipoConcepto(e.target.value);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
             {datosTipoConceptos.map(
-              ({ idTipoConcepto, DescripcionTipoConcepto }) => (
+              ({ codTipoConcepto, DescripcionTipoConcepto }) => (
                 <option
-                  key={idTipoConcepto}
-                  value={idTipoConcepto}
+                  key={codTipoConcepto}
+                  value={codTipoConcepto}
                   style={{ color: "black" }}
                 >
-                  {DescripcionTipoConcepto}
+                  {codTipoConcepto + " | " + DescripcionTipoConcepto}
                 </option>
               )
             )}
@@ -120,14 +137,22 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
         </FormControl>
         <FormControl>
           <FormLabel fontSize={14}>Concepto</FormLabel>
-          <Select size="sm">
-            {datosConceptos.map(({ idConcepto, DescripcionConcepto }) => (
+          <Select
+            size="sm"
+            id="concepto"
+            name="concepto"
+            onChange={(e) => {
+              setValorCodConcepto(e.target.value);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
-                key={idConcepto}
-                value={idConcepto}
+                key={codConcepto}
+                value={codConcepto}
                 style={{ color: "black" }}
               >
-                {DescripcionConcepto}
+                {codConcepto + " | " + DescripcionConcepto}
               </option>
             ))}
           </Select>
