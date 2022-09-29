@@ -10,7 +10,11 @@ import {
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 
-const Filtros = ({ setInfoFechasVencimientos }) => {
+const Filtros = ({
+  setInfoFechasVencimientos,
+  setCodConcepto,
+  setIdPeriodoAcademico,
+}) => {
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([]);
   const [datosTipoConceptos, setDatosTipoConceptos] = useState([]);
@@ -143,6 +147,7 @@ const Filtros = ({ setInfoFechasVencimientos }) => {
             name="concepto"
             onChange={(e) => {
               setValorCodConcepto(e.target.value);
+              setCodConcepto(e.target.value);
             }}
           >
             <option value={0}>--Seleccione--</option>
