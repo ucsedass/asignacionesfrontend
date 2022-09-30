@@ -77,6 +77,14 @@ const Filtros = ({
       });
   };
 
+  const años = [
+    { id: 2018 },
+    { id: 2019 },
+    { id: 2020 },
+    { id: 2021 },
+    { id: 2022 },
+    { id: 2023 },
+  ];
   return (
     <>
       <Stack
@@ -108,11 +116,18 @@ const Filtros = ({
         </FormControl>
         <FormControl>
           <FormLabel fontSize={14}>Año</FormLabel>
-          <Select size="sm">
-            <option>2019</option>
-            <option>2020</option>
-            <option>2021</option>
-            <option>2022</option>
+          <Select
+            size="sm"
+            onChange={(e) => {
+              setIdPeriodoAcademico(e.target.value);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {años.map(({ id }) => (
+              <option key={id} value={id} style={{ color: "black" }}>
+                {id}
+              </option>
+            ))}
           </Select>
         </FormControl>
         <FormControl>

@@ -15,7 +15,10 @@ export default function Home() {
         setIdPeriodoAcademico={setIdPeriodoAcademico}
       />
       <TablaPrincipal infoFechasVencimientos={infoFechasVencimientos} />
-      <NuevoPrecio />
+      <NuevoPrecio
+        codConcepto={codConcepto}
+        idPeriodoAcademico={idPeriodoAcademico}
+      />
     </>
   );
 }

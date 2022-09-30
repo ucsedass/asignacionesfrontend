@@ -7,7 +7,8 @@ import {
   Input,
   Button,
 } from "@chakra-ui/react";
-const NuevoPrecio = () => {
+import clienteAxios from "../../config/axios";
+const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [precio1v, setPrecio1v] = useState("");
@@ -16,6 +17,8 @@ const NuevoPrecio = () => {
 
   const guardarFechaPrecio = () => {
     var data = {
+      codConcepto: codConcepto,
+      idPeriodoAcademico: idPeriodoAcademico,
       fechaInicioVigencia: fechaInicio,
       fechaFinVigencia: fechaFin,
       importeVto1: precio1v,
@@ -24,6 +27,16 @@ const NuevoPrecio = () => {
       idUsuario: 53,
     };
     console.log("datos para mandar al sp:", data);
+    clienteAxios("/agregarfechasvencimientos", {
+      method: "POST",
+      data: data,
+    })
+      .then((respuesta) => {
+        console.log(respuesta);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <>

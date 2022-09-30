@@ -19,15 +19,15 @@ const TablaPrincipal = ({ infoFechasVencimientos }) => {
     },
     {
       name: "1º Vto",
-      selector: (row) => row.PrecioVto1,
+      selector: (row) => "$ " + parseFloat(row.PrecioVto1).toFixed(2),
     },
     {
       name: "2º Vto",
-      selector: (row) => row.PrecioVto2,
+      selector: (row) => "$ " + parseFloat(row.PrecioVto2).toFixed(2),
     },
     {
       name: "3º Vto",
-      selector: (row) => row.PrecioVto3,
+      selector: (row) => "$ " + parseFloat(row.PrecioVto3).toFixed(2),
     },
   ];
 
