@@ -6,14 +6,21 @@ import {
   FormLabel,
   Input,
   Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalOverlay,
+  ModalFooter,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
+import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
 const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [precio1v, setPrecio1v] = useState("");
   const [precio2v, setPrecio2v] = useState("");
   const [precio3v, setPrecio3v] = useState("");
+  const [modalConfirmacion, setModalConfirmacion] = useState(false);
 
   const guardarFechaPrecio = () => {
     var data = {
@@ -32,10 +39,10 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
       data: data,
     })
       .then((respuesta) => {
-        console.log(respuesta);
+        console.log("Exito:", respuesta);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error", error);
       });
   };
   return (
@@ -102,11 +109,40 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
           size="xs"
           w="100%"
           colorScheme="blue"
-          onClick={guardarFechaPrecio}
+          onClick={() => {
+            setModalConfirmacion(true);
+          }}
         >
           Guardar
         </Button>
       </Box>
+
+      <Modal
+        isOpen={modalConfirmacion}
+        onClose={() => {
+          setModalConfirmacion(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>Confirmar agregar registro.</ModalBody>
+
+          <ModalFooter>
+            <Button
+              size="sm"
+              colorScheme="red"
+              onClick={() => {
+                setModalConfirmacion(false);
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button size="sm" colorScheme="blue" onClick={guardarFechaPrecio}>
+              Aceptar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

@@ -9,13 +9,11 @@ const TablaPrincipal = ({ infoFechasVencimientos }) => {
       name: "Fecha Inicio",
       selector: (row) =>
         Moment(row.FechaInicioVigenciaPrecio).format("DD-MM-YYYY"),
-      sortable: true,
     },
     {
       name: "Fecha Fin",
       selector: (row) =>
-        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-YYYY"),
-      sortable: true,
+        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-yyyy"),
     },
     {
       name: "1º Vto",
