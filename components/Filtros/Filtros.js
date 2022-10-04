@@ -7,6 +7,8 @@ import {
   Input,
   Stack,
   Button,
+  Checkbox,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 
@@ -14,6 +16,7 @@ const Filtros = ({
   setInfoFechasVencimientos,
   setCodConcepto,
   setIdPeriodoAcademico,
+  idPeriodoAcademico,
 }) => {
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([]);
@@ -21,6 +24,7 @@ const Filtros = ({
   const [valorCodConcepto, setValorCodConcepto] = useState(0);
   const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
   const [valorIdSede, setValorIdSede] = useState(0);
+  const [vigentes, setVigentes] = useState(false);
   useEffect(() => {
     traerSedes();
     traerConceptos();
@@ -67,6 +71,24 @@ const Filtros = ({
         codConcepto: valorCodConcepto,
         codTipoConcepto: valorCodTipoConcepto,
         idSede: valorIdSede,
+        idPeriodoAcademico: idPeriodoAcademico,
+      },
+    })
+      .then((respuesta) => {
+        setInfoFechasVencimientos(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const traerFechasVencimientosVigentes = () => {
+    clienteAxios("/fechasvencimientosvigentes", {
+      method: "POST",
+      data: {
+        codConcepto: valorCodConcepto,
+        codTipoConcepto: valorCodTipoConcepto,
+        idSede: valorIdSede,
       },
     })
       .then((respuesta) => {
@@ -85,6 +107,18 @@ const Filtros = ({
     { id: 2022 },
     { id: 2023 },
   ];
+
+  const checked = () => {
+    console.log("chekeddd", vigentes);
+    if (vigentes === true) {
+      traerFechasVencimientos();
+      console.log("esta en true", new Date());
+    } else {
+      console.log("esta en false");
+      traerFechasVencimientosVigentes();
+    }
+  };
+
   return (
     <>
       <Stack
@@ -190,6 +224,16 @@ const Filtros = ({
           </Button>
         </Box>
       </Stack>
+      <Box w="80%" mx="auto" mt={2}>
+        <Checkbox
+          onChange={() => {
+            checked();
+            setVigentes(!vigentes);
+          }}
+        >
+          Vigentes
+        </Checkbox>
+      </Box>
     </>
   );
 };

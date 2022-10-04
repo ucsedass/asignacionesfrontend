@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Tabla from "react-data-table-component";
-import { Box } from "@chakra-ui/react";
+import { Box, Checkbox } from "@chakra-ui/react";
 import Moment from "moment";
 import { estiloTablas } from "../estiloTablas";
+import moment from "moment";
 const TablaPrincipal = ({ infoFechasVencimientos }) => {
+  const [vigentes, setVigentes] = useState(false);
   const columns = [
     {
       name: "Fecha Inicio",
@@ -26,6 +28,30 @@ const TablaPrincipal = ({ infoFechasVencimientos }) => {
     {
       name: "3º Vto",
       selector: (row) => "$ " + parseFloat(row.PrecioVto3).toFixed(2),
+    },
+  ];
+  const columnsVigentes = [
+    {
+      name: "Fecha Inicio",
+      selector: (row) =>
+        Moment(row.FechaInicioVigenciaPrecio).format("DD-MM-YYYY"),
+    },
+    {
+      name: "Fecha Fin",
+      selector: (row) =>
+        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-yyyy"),
+    },
+    {
+      name: "1º Vto",
+      when: (row) => "* " + parseFloat(row.PrecioVto1).toFixed(2),
+    },
+    {
+      name: "2º Vto",
+      selector: (row) => "* " + parseFloat(row.PrecioVto2).toFixed(2),
+    },
+    {
+      name: "3º Vto",
+      selector: (row) => "* " + parseFloat(row.PrecioVto3).toFixed(2),
     },
   ];
 

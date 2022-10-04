@@ -11,6 +11,8 @@ import {
   ModalContent,
   ModalOverlay,
   ModalFooter,
+  Center,
+  ModalHeader,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
@@ -125,11 +127,14 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalBody>Confirmar agregar registro.</ModalBody>
+          <ModalHeader></ModalHeader>
+          <ModalBody>
+            <Center fontSize={18}>Confirmar agregar registro.</Center>
+          </ModalBody>
 
           <ModalFooter>
             <Button
-              size="sm"
+              size="xs"
               colorScheme="red"
               onClick={() => {
                 setModalConfirmacion(false);
@@ -137,7 +142,12 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
             >
               Cancelar
             </Button>
-            <Button size="sm" colorScheme="blue" onClick={guardarFechaPrecio}>
+            <Button
+              size="xs"
+              ml={3}
+              colorScheme="blue"
+              onClick={guardarFechaPrecio}
+            >
               Aceptar
             </Button>
           </ModalFooter>
