@@ -13,8 +13,26 @@ import {
   ModalFooter,
   Center,
   ModalHeader,
+  VStack,
+  Icon,
+  Text,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
+import {
+  FaRegSave,
+  FaRegCheckCircle,
+  FaInfoCircle,
+  FaTrashAlt,
+  FaMoneyCheckAlt,
+  FaSearch,
+  FaPlus,
+  FaRegTimesCircle,
+  FaSyncAlt,
+  FaRegCreditCard,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+  FaExclamationCircle,
+} from "react-icons/fa";
 import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
 const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
   const [fechaInicio, setFechaInicio] = useState("");
@@ -22,7 +40,11 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
   const [precio1v, setPrecio1v] = useState("");
   const [precio2v, setPrecio2v] = useState("");
   const [precio3v, setPrecio3v] = useState("");
+  const [error, setError] = useState(true);
+
   const [modalConfirmacion, setModalConfirmacion] = useState(false);
+  const [modalExito, setModalExito] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   const guardarFechaPrecio = () => {
     var data = {
@@ -42,10 +64,21 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
     })
       .then((respuesta) => {
         console.log("Exito:", respuesta);
+        setModalExito(true);
+        setModalConfirmacion(false);
       })
       .catch((error) => {
         console.log("Error", error);
       });
+  };
+
+  const validarCampos = () => {
+    if ([precio1v, precio2v, precio3v].includes("")) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    console.log(error, precio1v);
   };
   return (
     <>
@@ -81,6 +114,8 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
         <FormControl>
           <FormLabel fontSize={14}>1º Vencimiento</FormLabel>
           <Input
+            type="number"
+            onBlur={validarCampos}
             size="xs"
             onChange={(e) => {
               setPrecio1v(e.target.value);
@@ -90,6 +125,8 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
         <FormControl>
           <FormLabel fontSize={14}>2º Vencimiento</FormLabel>
           <Input
+            type="number"
+            onBlur={validarCampos}
             size="xs"
             onChange={(e) => {
               setPrecio2v(e.target.value);
@@ -99,6 +136,8 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
         <FormControl>
           <FormLabel fontSize={14}>3º Vencimiento</FormLabel>
           <Input
+            type="number"
+            onBlur={validarCampos}
             size="xs"
             onChange={(e) => {
               setPrecio3v(e.target.value);
@@ -108,6 +147,7 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
       </Stack>
       <Box w="80%" mx="auto" mt={3}>
         <Button
+          disabled={error}
           size="xs"
           w="100%"
           colorScheme="blue"
@@ -147,6 +187,69 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
               ml={3}
               colorScheme="blue"
               onClick={guardarFechaPrecio}
+            >
+              Aceptar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={modalExito}
+        onClose={() => {
+          setModalExito(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent bgColor={"white"}>
+          <ModalBody>
+            <Center>
+              <VStack>
+                <Icon w={20} h={20} color="green.500" as={FaRegCheckCircle} />
+                <Text>Datos guardados.</Text>
+              </VStack>
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              w="100%"
+              size="xs"
+              colorScheme="green"
+              onClick={() => {
+                setModalExito(false);
+              }}
+            >
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/*Modal error*/}
+      <Modal
+        isOpen={modalError}
+        onClose={() => {
+          setModalError(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <Center>
+              <VStack>
+                <Icon w={20} h={20} color="red.500" as={FaExclamationCircle} />
+                <Text>Error.</Text>
+              </VStack>
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme={"red"}
+              size="xm"
+              w="100%"
+              onClick={() => {
+                setModalError(false);
+              }}
             >
               Aceptar
             </Button>
