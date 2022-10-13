@@ -3,19 +3,21 @@ import Tabla from "react-data-table-component";
 import { Box, Checkbox } from "@chakra-ui/react";
 import Moment from "moment";
 import { estiloTablas } from "../estiloTablas";
-import moment from "moment";
+
 const TablaPrincipal = ({ infoFechasVencimientos }) => {
   const [vigentes, setVigentes] = useState(false);
   const columns = [
     {
       name: "Fecha Inicio",
       selector: (row) =>
-        Moment(row.FechaInicioVigenciaPrecio).format("DD-MM-YYYY"),
+        Moment(row.FechaInicioVigenciaPrecio)
+          .add(1, "days")
+          .format("DD-MM-YYYY"),
     },
     {
       name: "Fecha Fin",
       selector: (row) =>
-        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-yyyy"),
+        Moment(row.FechaFinVigenciaPrecio).add(1, "days").format("DD-MM-YYYY"),
     },
     {
       name: "1º Vto",

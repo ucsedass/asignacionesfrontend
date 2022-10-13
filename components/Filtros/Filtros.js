@@ -4,11 +4,10 @@ import {
   FormControl,
   FormLabel,
   Select,
-  Input,
   Stack,
   Button,
-  Checkbox,
-  CheckboxGroup,
+  RadioGroup,
+  Radio,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 
@@ -17,6 +16,7 @@ const Filtros = ({
   setCodConcepto,
   setIdPeriodoAcademico,
   idPeriodoAcademico,
+  refrescar,
 }) => {
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([]);
@@ -24,7 +24,7 @@ const Filtros = ({
   const [valorCodConcepto, setValorCodConcepto] = useState(0);
   const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
   const [valorIdSede, setValorIdSede] = useState(0);
-  const [vigentes, setVigentes] = useState(false);
+  const [vigentes, setVigentes] = useState("");
   useEffect(() => {
     traerSedes();
     traerConceptos();
@@ -65,6 +65,7 @@ const Filtros = ({
   };
 
   const traerFechasVencimientos = () => {
+    console.log("TODOS:", valorCodConcepto, valorCodTipoConcepto, valorIdSede);
     clienteAxios("/fechasvencimientos", {
       method: "POST",
       data: {
@@ -89,6 +90,7 @@ const Filtros = ({
         codConcepto: valorCodConcepto,
         codTipoConcepto: valorCodTipoConcepto,
         idSede: valorIdSede,
+        idPeriodoAcademico: idPeriodoAcademico,
       },
     })
       .then((respuesta) => {
@@ -107,17 +109,17 @@ const Filtros = ({
     { id: 2022 },
     { id: 2023 },
   ];
+  useEffect(() => {
+    traerFechasVencimientos();
+  }, [refrescar]);
 
-  const checked = () => {
-    console.log("chekeddd", vigentes);
-    if (vigentes === true) {
-      traerFechasVencimientos();
-      console.log("esta en true", new Date());
-    } else {
-      console.log("esta en false");
+  useEffect(() => {
+    if (vigentes === "vigentes") {
       traerFechasVencimientosVigentes();
+    } else {
+      traerFechasVencimientos();
     }
-  };
+  }, [vigentes]);
 
   return (
     <>
@@ -225,14 +227,16 @@ const Filtros = ({
         </Box>
       </Stack>
       <Box w="80%" mx="auto" mt={2}>
-        <Checkbox
-          onChange={() => {
-            checked();
-            setVigentes(!vigentes);
-          }}
+        <RadioGroup
+          defaultValue="todos"
+          onChange={setVigentes}
+          value={vigentes}
         >
-          Vigentes
-        </Checkbox>
+          <Stack direction="row">
+            <Radio value="todos">Todos</Radio>
+            <Radio value="vigentes">Vigentes</Radio>
+          </Stack>
+        </RadioGroup>
       </Box>
     </>
   );

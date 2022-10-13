@@ -34,7 +34,12 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
-const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
+const NuevoPrecio = ({
+  codConcepto,
+  idPeriodoAcademico,
+  setRefrescar,
+  refrescar,
+}) => {
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
   const [precio1v, setPrecio1v] = useState("");
@@ -64,6 +69,7 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
     })
       .then((respuesta) => {
         console.log("Exito:", respuesta);
+        setRefrescar(!refrescar);
         setModalExito(true);
         setModalConfirmacion(false);
       })
@@ -146,6 +152,12 @@ const NuevoPrecio = ({ codConcepto, idPeriodoAcademico }) => {
         </FormControl>
       </Stack>
       <Box w="80%" mx="auto" mt={3}>
+        {error && (
+          <Box bgColor="red.400">
+            <Center color="white">REVISAR DATOS</Center>
+          </Box>
+        )}
+
         <Button
           disabled={error}
           size="xs"
