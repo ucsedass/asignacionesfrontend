@@ -5,55 +5,64 @@ import Moment from "moment";
 import { estiloTablas } from "../estiloTablas";
 
 const TablaPrincipal = ({ infoFechasVencimientos }) => {
-  const [vigentes, setVigentes] = useState(false);
   const columns = [
     {
-      name: "Fecha Inicio",
-      selector: (row) =>
-        Moment(row.FechaInicioVigenciaPrecio)
-          .add(1, "days")
-          .format("DD-MM-YYYY"),
+      name: (
+        <h5>
+          <strong>Fecha Inicio</strong>
+        </h5>
+      ),
+      cell: (row) => (
+        <strong>
+          {Moment(row.FechaInicioVigenciaPrecio)
+            .add(1, "days")
+            .format("DD-MM-YYYY")}
+        </strong>
+      ),
     },
     {
-      name: "Fecha Fin",
-      selector: (row) =>
-        Moment(row.FechaFinVigenciaPrecio).add(1, "days").format("DD-MM-YYYY"),
+      name: (
+        <h5>
+          <strong>Fecha Fin</strong>
+        </h5>
+      ),
+      cell: (row) => (
+        <strong>
+          {Moment(row.FechaFinVigenciaPrecio)
+            .add(1, "days")
+            .format("DD-MM-YYYY")}
+        </strong>
+      ),
     },
     {
-      name: "1º Vto",
-      selector: (row) => "$ " + parseFloat(row.PrecioVto1).toFixed(2),
+      name: (
+        <h5>
+          <strong>1º Vto</strong>
+        </h5>
+      ),
+      cell: (row) => (
+        <strong>{"$ " + parseFloat(row.PrecioVto1).toFixed(2)}</strong>
+      ),
     },
     {
-      name: "2º Vto",
-      selector: (row) => "$ " + parseFloat(row.PrecioVto2).toFixed(2),
+      name: (
+        <h5>
+          <strong>2º Vto</strong>
+        </h5>
+      ),
+      cell: (row) => (
+        <strong>{"$ " + parseFloat(row.PrecioVto2).toFixed(2)}</strong>
+      ),
     },
     {
-      name: "3º Vto",
-      selector: (row) => "$ " + parseFloat(row.PrecioVto3).toFixed(2),
-    },
-  ];
-  const columnsVigentes = [
-    {
-      name: "Fecha Inicio",
-      selector: (row) =>
-        Moment(row.FechaInicioVigenciaPrecio).format("DD-MM-YYYY"),
-    },
-    {
-      name: "Fecha Fin",
-      selector: (row) =>
-        Moment(row.FechaFinVigenciaPrecio).format("DD-MM-yyyy"),
-    },
-    {
-      name: "1º Vto",
-      when: (row) => "* " + parseFloat(row.PrecioVto1).toFixed(2),
-    },
-    {
-      name: "2º Vto",
-      selector: (row) => "* " + parseFloat(row.PrecioVto2).toFixed(2),
-    },
-    {
-      name: "3º Vto",
-      selector: (row) => "* " + parseFloat(row.PrecioVto3).toFixed(2),
+      name: (
+        <h5>
+          <strong>3º Vto</strong>
+        </h5>
+      ),
+      cell: (row) => (
+        <strong>{"$ " + parseFloat(row.PrecioVto3).toFixed(2)}</strong>
+      ),
     },
   ];
 

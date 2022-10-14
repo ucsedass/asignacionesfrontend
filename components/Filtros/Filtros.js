@@ -77,6 +77,7 @@ const Filtros = ({
     })
       .then((respuesta) => {
         setInfoFechasVencimientos(respuesta.data);
+        setVigentes("todos");
       })
       .catch((error) => {
         console.log(error);
@@ -95,6 +96,7 @@ const Filtros = ({
     })
       .then((respuesta) => {
         setInfoFechasVencimientos(respuesta.data);
+        setVigentes("vigentes");
       })
       .catch((error) => {
         console.log(error);
@@ -128,7 +130,7 @@ const Filtros = ({
         w="80%"
         mx="auto"
         spacing={2}
-        border="solid 1px #F1F1F1"
+        border="solid 2px #F1F1F1"
         p={2}
         mt={2}
       >
@@ -231,6 +233,7 @@ const Filtros = ({
           defaultValue="todos"
           onChange={setVigentes}
           value={vigentes}
+          size="sm"
         >
           <Stack direction="row">
             <Radio value="todos">Todos</Radio>

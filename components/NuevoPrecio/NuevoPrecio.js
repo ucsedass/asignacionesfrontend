@@ -79,10 +79,14 @@ const NuevoPrecio = ({
   };
 
   const validarCampos = () => {
-    if ([precio1v, precio2v, precio3v].includes("")) {
+    if ([precio1v, precio2v, precio3v, fechaInicio, fechaFin].includes("")) {
       setError(true);
     } else {
-      setError(false);
+      if (fechaFin < fechaInicio) {
+        setError(true);
+      } else {
+        setError(false);
+      }
     }
     console.log(error, precio1v);
   };
@@ -93,7 +97,7 @@ const NuevoPrecio = ({
         w="80%"
         mx="auto"
         spacing={2}
-        border="solid 1px #F1F1F1"
+        border="solid 2px #F1F1F1"
         p={2}
         mt={5}
       >
@@ -101,6 +105,7 @@ const NuevoPrecio = ({
           <FormLabel fontSize={14}>Fecha Inicio</FormLabel>
           <Input
             size="xs"
+            onBlur={validarCampos}
             type="date"
             onChange={(e) => {
               setFechaInicio(e.target.value);
@@ -111,6 +116,7 @@ const NuevoPrecio = ({
           <FormLabel fontSize={14}>Fecha Fin</FormLabel>
           <Input
             size="xs"
+            onBlur={validarCampos}
             type="date"
             onChange={(e) => {
               setFechaFin(e.target.value);
