@@ -10,6 +10,7 @@ import {
   Radio,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
+import { FaSearch } from "react-icons/fa";
 
 const Filtros = ({
   setInfoFechasVencimientos,
@@ -21,6 +22,8 @@ const Filtros = ({
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([]);
   const [datosTipoConceptos, setDatosTipoConceptos] = useState([]);
+  const [datosProgramaAcademico, setDatosProgramaAcademico] = useState([]);
+  const [valorProgramaAcademico, setValorProgramaAcademico] = useState(0);
   const [valorCodConcepto, setValorCodConcepto] = useState(0);
   const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
   const [valorIdSede, setValorIdSede] = useState(0);
@@ -29,8 +32,20 @@ const Filtros = ({
     traerSedes();
     traerConceptos();
     traerTipoConceptos();
+    traerProgramaAcademico();
   }, []);
 
+  const traerProgramaAcademico = () => {
+    clienteAxios
+      .get("/programaacademico")
+      .then((respuesta) => {
+        setDatosProgramaAcademico(respuesta.data);
+        console.log("PRORGAMAS ACADEMICOS", datosProgramaAcademico);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const traerConceptos = () => {
     clienteAxios
       .get("/conceptos")
@@ -72,6 +87,7 @@ const Filtros = ({
         codConcepto: valorCodConcepto,
         codTipoConcepto: valorCodTipoConcepto,
         idSede: valorIdSede,
+        idPrograma: valorProgramaAcademico,
         idPeriodoAcademico: idPeriodoAcademico,
       },
     })
@@ -91,6 +107,7 @@ const Filtros = ({
         codConcepto: valorCodConcepto,
         codTipoConcepto: valorCodTipoConcepto,
         idSede: valorIdSede,
+        idPrograma: valorProgramaAcademico,
         idPeriodoAcademico: idPeriodoAcademico,
       },
     })
@@ -193,6 +210,30 @@ const Filtros = ({
           </Select>
         </FormControl>
         <FormControl>
+          <FormLabel fontSize={14}>Programa Académico</FormLabel>
+          <Select
+            size="sm"
+            name="idPrograma"
+            id="idPrograma"
+            onChange={(e) => {
+              setValorProgramaAcademico(e.target.value);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {datosProgramaAcademico.map(
+              ({ idPrograma, NombreProgramaAcademico }) => (
+                <option
+                  key={idPrograma}
+                  value={idPrograma}
+                  style={{ color: "black" }}
+                >
+                  {NombreProgramaAcademico}
+                </option>
+              )
+            )}
+          </Select>
+        </FormControl>
+        <FormControl>
           <FormLabel fontSize={14}>Concepto</FormLabel>
           <Select
             size="sm"
@@ -217,7 +258,8 @@ const Filtros = ({
         </FormControl>
         <Box>
           <Button
-            colorScheme="green"
+            rightIcon={<FaSearch />}
+            colorScheme="orange"
             mt={7}
             size="xs"
             w="100px"

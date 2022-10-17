@@ -21,16 +21,6 @@ import clienteAxios from "../../config/axios";
 import {
   FaRegSave,
   FaRegCheckCircle,
-  FaInfoCircle,
-  FaTrashAlt,
-  FaMoneyCheckAlt,
-  FaSearch,
-  FaPlus,
-  FaRegTimesCircle,
-  FaSyncAlt,
-  FaRegCreditCard,
-  FaRegThumbsDown,
-  FaRegThumbsUp,
   FaExclamationCircle,
 } from "react-icons/fa";
 import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
@@ -82,7 +72,12 @@ const NuevoPrecio = ({
     if ([precio1v, precio2v, precio3v, fechaInicio, fechaFin].includes("")) {
       setError(true);
     } else {
-      if (fechaFin < fechaInicio) {
+      if (
+        fechaFin < fechaInicio ||
+        precio1v <= 0 ||
+        precio2v <= 0 ||
+        precio3v <= 0
+      ) {
         setError(true);
       } else {
         setError(false);
@@ -165,6 +160,7 @@ const NuevoPrecio = ({
         )}
 
         <Button
+          rightIcon={<FaRegSave />}
           disabled={error}
           size="xs"
           w="100%"
