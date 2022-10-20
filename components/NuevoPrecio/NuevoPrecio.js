@@ -53,19 +53,39 @@ const NuevoPrecio = ({
       idUsuario: 53,
     };
     console.log("datos para mandar al sp:", data);
-    clienteAxios("/agregarfechasvencimientos", {
-      method: "POST",
-      data: data,
-    })
-      .then((respuesta) => {
-        console.log("Exito:", respuesta);
-        setRefrescar(!refrescar);
-        setModalExito(true);
-        setModalConfirmacion(false);
+
+    if (
+      codConcepto !== 0 &&
+      idPeriodoAcademico !== 0 &&
+      codConcepto !== "0" &&
+      idPeriodoAcademico !== "0"
+    ) {
+      clienteAxios("/agregarfechasvencimientos", {
+        method: "POST",
+        data: data,
       })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+        .then((respuesta) => {
+          console.log("Exito:", respuesta.data.returnValue);
+
+          if (respuesta.data.returnValue === 1) {
+            setRefrescar(!refrescar);
+            setModalExito(true);
+            setModalConfirmacion(false);
+          } else {
+            setModalError(true);
+            setModalConfirmacion(false);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+          setModalError(true);
+        });
+    } else {
+      setModalConfirmacion(false);
+      setModalError(true);
+
+      console.log("NO INGRESO AL PROCEDIMEINTO ALMACENADO");
+    }
   };
 
   const validarCampos = () => {
@@ -99,6 +119,7 @@ const NuevoPrecio = ({
         <FormControl>
           <FormLabel fontSize={14}>Fecha Inicio</FormLabel>
           <Input
+            isInvalid={fechaFin <= fechaInicio || fechaInicio === ""}
             size="xs"
             onBlur={validarCampos}
             type="date"
@@ -110,6 +131,7 @@ const NuevoPrecio = ({
         <FormControl>
           <FormLabel fontSize={14}>Fecha Fin</FormLabel>
           <Input
+            isInvalid={fechaFin <= fechaInicio || fechaFin === ""}
             size="xs"
             onBlur={validarCampos}
             type="date"
@@ -121,6 +143,7 @@ const NuevoPrecio = ({
         <FormControl>
           <FormLabel fontSize={14}>1º Vencimiento</FormLabel>
           <Input
+            isInvalid={precio1v <= 0 || precio1v === ""}
             type="number"
             onBlur={validarCampos}
             size="xs"
@@ -132,6 +155,7 @@ const NuevoPrecio = ({
         <FormControl>
           <FormLabel fontSize={14}>2º Vencimiento</FormLabel>
           <Input
+            isInvalid={precio2v <= 0 || precio2v === ""}
             type="number"
             onBlur={validarCampos}
             size="xs"
@@ -143,6 +167,7 @@ const NuevoPrecio = ({
         <FormControl>
           <FormLabel fontSize={14}>3º Vencimiento</FormLabel>
           <Input
+            isInvalid={precio3v <= 0 || precio3v === ""}
             type="number"
             onBlur={validarCampos}
             size="xs"
@@ -153,11 +178,11 @@ const NuevoPrecio = ({
         </FormControl>
       </Stack>
       <Box w="80%" mx="auto" mt={3}>
-        {error && (
+        {/* error && (
           <Box bgColor="red.400">
             <Center color="white">REVISAR DATOS</Center>
           </Box>
-        )}
+        ) */}
 
         <Button
           rightIcon={<FaRegSave />}
@@ -252,7 +277,10 @@ const NuevoPrecio = ({
             <Center>
               <VStack>
                 <Icon w={20} h={20} color="red.500" as={FaExclamationCircle} />
-                <Text>Error.</Text>
+                {codConcepto === 0 ||
+                  (codConcepto === "0" && <Text>Seleccionar concepto.</Text>)}
+                {idPeriodoAcademico === 0 ||
+                  (idPeriodoAcademico === "0" && <Text>Seleccionar año.</Text>)}
               </VStack>
             </Center>
           </ModalBody>
