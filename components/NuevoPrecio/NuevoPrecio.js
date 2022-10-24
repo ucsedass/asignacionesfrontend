@@ -37,6 +37,9 @@ const NuevoPrecio = ({
   const [precio3v, setPrecio3v] = useState("");
   const [error, setError] = useState(true);
 
+  const [ok, setOk] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+
   const [modalConfirmacion, setModalConfirmacion] = useState(false);
   const [modalExito, setModalExito] = useState(false);
   const [modalError, setModalError] = useState(false);
@@ -51,6 +54,8 @@ const NuevoPrecio = ({
       importeVto2: precio2v,
       importeVto3: precio3v,
       idUsuario: 53,
+      ok,
+      mensaje,
     };
     console.log("datos para mandar al sp:", data);
 
@@ -66,6 +71,8 @@ const NuevoPrecio = ({
       })
         .then((respuesta) => {
           console.log("Exito:", respuesta.data.returnValue);
+          console.log("Rta::", respuesta.data.output);
+          setMensaje(respuesta.data.output.mensaje);
 
           if (respuesta.data.returnValue === 1) {
             setRefrescar(!refrescar);
@@ -281,6 +288,7 @@ const NuevoPrecio = ({
                   (codConcepto === "0" && <Text>Seleccionar concepto.</Text>)}
                 {idPeriodoAcademico === 0 ||
                   (idPeriodoAcademico === "0" && <Text>Seleccionar año.</Text>)}
+                {<Text>{mensaje}</Text>}
               </VStack>
             </Center>
           </ModalBody>
