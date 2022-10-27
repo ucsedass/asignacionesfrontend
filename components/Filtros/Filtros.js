@@ -35,9 +35,51 @@ const Filtros = ({
     traerProgramaAcademico();
   }, []);
 
-  const traerProgramaAcademico = () => {
-    clienteAxios
-      .get("/programaacademico")
+  useEffect(() => {
+    console.log(
+      "Aqui hay que actualizar los CONCEPTOS",
+      valorIdSede,
+      idPeriodoAcademico,
+      valorCodTipoConcepto,
+      valorProgramaAcademico
+    );
+
+    let datos = {
+      valorIdSede,
+      idPeriodoAcademico,
+      valorCodTipoConcepto,
+      valorProgramaAcademico,
+    };
+    console.log("ESTOS SON LOS DATOS CONCEPTOS::", datosConceptos);
+    traerConceptos(datos);
+  }, [
+    valorIdSede,
+    valorCodTipoConcepto,
+    idPeriodoAcademico,
+    valorProgramaAcademico,
+  ]);
+
+  useEffect(() => {
+    console.log(
+      "aqui hay que actualizar los PROGRAMAS",
+      valorIdSede,
+      idPeriodoAcademico,
+      valorCodTipoConcepto
+    );
+    let datos = {
+      valorIdSede,
+      idPeriodoAcademico,
+      valorCodTipoConcepto,
+    };
+    traerProgramaAcademico(datos);
+  }, [valorIdSede, valorCodTipoConcepto, idPeriodoAcademico]);
+
+  const traerProgramaAcademico = (data) => {
+    console.log("antes de mandar", data);
+    clienteAxios("/programaacademico", {
+      method: "POST",
+      data: data,
+    })
       .then((respuesta) => {
         setDatosProgramaAcademico(respuesta.data);
         console.log("PRORGAMAS ACADEMICOS", datosProgramaAcademico);
@@ -46,9 +88,8 @@ const Filtros = ({
         console.log(error);
       });
   };
-  const traerConceptos = () => {
-    clienteAxios
-      .get("/conceptos")
+  const traerConceptos = (data) => {
+    clienteAxios("/conceptos", { method: "POST", data: data })
       .then((respuesta) => {
         setDatosConceptos(respuesta.data);
       })
