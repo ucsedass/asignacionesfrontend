@@ -285,7 +285,8 @@ const Filtros = ({
               setCodConcepto(e.target.value);
             }}
           >
-            <option value={0}>--Seleccione--</option>
+            if (datosConceptos === [])
+            {<option value={0}>--Seleccione--</option>} else
             {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
                 key={codConcepto}
