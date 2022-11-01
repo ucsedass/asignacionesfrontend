@@ -20,7 +20,9 @@ const Filtros = ({
   refrescar,
 }) => {
   const [datosSedes, setDatosSedes] = useState([]);
-  const [datosConceptos, setDatosConceptos] = useState([]);
+  const [datosConceptos, setDatosConceptos] = useState([
+    { codConcepto: "", DescripcionConcepto: "" },
+  ]);
   const [datosTipoConceptos, setDatosTipoConceptos] = useState([]);
   const [datosProgramaAcademico, setDatosProgramaAcademico] = useState([]);
   const [valorProgramaAcademico, setValorProgramaAcademico] = useState(0);
@@ -30,7 +32,7 @@ const Filtros = ({
   const [vigentes, setVigentes] = useState("");
   useEffect(() => {
     traerSedes();
-    traerConceptos();
+    // traerConceptos();
     traerTipoConceptos();
     traerProgramaAcademico();
   }, []);
@@ -285,7 +287,7 @@ const Filtros = ({
               setCodConcepto(e.target.value);
             }}
           >
-            if (datosConceptos === [])
+            if (datosConceptos === [] || datosConceptos === undefined)
             {<option value={0}>--Seleccione--</option>} else
             {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
