@@ -164,12 +164,12 @@ const Filtros = ({
   };
 
   const años = [
-    { id: 2018 },
-    { id: 2019 },
-    { id: 2020 },
-    { id: 2021 },
-    { id: 2022 },
-    { id: 2023 },
+    { id: new Date().getFullYear() - 4 },
+    { id: new Date().getFullYear() - 3 },
+    { id: new Date().getFullYear() - 2 },
+    { id: new Date().getFullYear() - 1 },
+    { id: new Date().getFullYear() },
+    { id: new Date().getFullYear() + 1 },
   ];
   useEffect(() => {
     traerFechasVencimientos();
