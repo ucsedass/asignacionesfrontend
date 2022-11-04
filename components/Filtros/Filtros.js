@@ -186,7 +186,7 @@ const Filtros = ({
   return (
     <>
       <Stack
-        direction={["column", "row"]}
+        direction={{ base: "column", sm: "column", lg: "row" }}
         w="80%"
         mx="auto"
         spacing={2}
@@ -302,11 +302,12 @@ const Filtros = ({
         </FormControl>
         <Box>
           <Button
+            w={{ base: "100%" }}
             rightIcon={<FaSearch />}
             colorScheme="orange"
             mt={7}
             size="xs"
-            w="100px"
+            // w="100px"
             h="35px"
             onClick={traerFechasVencimientos}
           >

@@ -23,7 +23,7 @@ import {
   FaRegCheckCircle,
   FaExclamationCircle,
 } from "react-icons/fa";
-import { MODERN_BROWSERSLIST_TARGET } from "next/dist/shared/lib/constants";
+
 const NuevoPrecio = ({
   codConcepto,
   idPeriodoAcademico,
@@ -115,7 +115,7 @@ const NuevoPrecio = ({
   return (
     <>
       <Stack
-        direction={["column", "row"]}
+        direction={{ base: "column", sm: "column", lg: "row" }}
         w="80%"
         mx="auto"
         spacing={2}
