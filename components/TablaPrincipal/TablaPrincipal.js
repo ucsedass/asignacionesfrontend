@@ -77,7 +77,7 @@ const TablaPrincipal = ({ infoFechasVencimientos }) => {
           data={infoFechasVencimientos}
           defaultSortFieldId={1}
           customStyles={estiloTablas}
-          noDataComponent="Sin conceptos"
+          noDataComponent="No se encontraron datos."
         />
       </Box>
     </>

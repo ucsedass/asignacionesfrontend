@@ -30,12 +30,16 @@ const Filtros = ({
   const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
   const [valorIdSede, setValorIdSede] = useState(0);
   const [vigentes, setVigentes] = useState("");
+  const [gatillo, setGatillo] = useState(false);
   useEffect(() => {
     traerSedes();
     // traerConceptos();
     traerTipoConceptos();
-    traerProgramaAcademico();
+    // traerProgramaAcademico();
   }, []);
+  useEffect(() => {
+    traerFechasVencimientos();
+  }, [gatillo]);
 
   useEffect(() => {
     console.log(
@@ -202,6 +206,7 @@ const Filtros = ({
             id="idSede"
             onChange={(e) => {
               setValorIdSede(e.target.value);
+              setGatillo(!gatillo);
             }}
           >
             <option value={0}>--Seleccione--</option>
@@ -218,6 +223,7 @@ const Filtros = ({
             size="sm"
             onChange={(e) => {
               setIdPeriodoAcademico(e.target.value);
+              setGatillo(!gatillo);
             }}
           >
             <option value={0}>--Seleccione--</option>
@@ -236,6 +242,7 @@ const Filtros = ({
             id="codTipoConcepto"
             onChange={(e) => {
               setValorCodTipoConcepto(e.target.value);
+              setGatillo(!gatillo);
             }}
           >
             <option value={0}>--Seleccione--</option>
@@ -260,6 +267,7 @@ const Filtros = ({
             id="idPrograma"
             onChange={(e) => {
               setValorProgramaAcademico(e.target.value);
+              setGatillo(!gatillo);
             }}
           >
             <option value={0}>--Seleccione--</option>
@@ -285,10 +293,9 @@ const Filtros = ({
             onChange={(e) => {
               setValorCodConcepto(e.target.value);
               setCodConcepto(e.target.value);
+              setGatillo(!gatillo);
             }}
           >
-            if (datosConceptos === [] || datosConceptos === undefined)
-            {<option value={0}>--Seleccione--</option>} else
             {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
                 key={codConcepto}
