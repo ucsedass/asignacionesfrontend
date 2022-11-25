@@ -290,12 +290,16 @@ const Filtros = ({
             size="sm"
             id="concepto"
             name="concepto"
+            onClick={(e) => {
+              setCodConcepto(e.target.value);
+            }}
             onChange={(e) => {
               setValorCodConcepto(e.target.value);
               setCodConcepto(e.target.value);
               setGatillo(!gatillo);
             }}
           >
+            <option value={0}>--Seleccione--</option>
             {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
                 key={codConcepto}
