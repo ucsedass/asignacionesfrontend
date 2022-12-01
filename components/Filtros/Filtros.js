@@ -270,7 +270,6 @@ const Filtros = ({
               setGatillo(!gatillo);
             }}
           >
-            <option value={0}>--Seleccione--</option>
             {datosProgramaAcademico.map(
               ({ idPrograma, NombreProgramaAcademico }) => (
                 <option
@@ -299,7 +298,6 @@ const Filtros = ({
               setGatillo(!gatillo);
             }}
           >
-            <option value={0}>--Seleccione--</option>
             {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
               <option
                 key={codConcepto}
