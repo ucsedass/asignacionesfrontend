@@ -39,24 +39,16 @@ const Filtros = ({
   }, []);
   useEffect(() => {
     traerFechasVencimientos();
-  }, [gatillo]);
+  }, [valorCodConcepto, idPeriodoAcademico]);
 
   useEffect(() => {
-    console.log(
-      "Aqui hay que actualizar los CONCEPTOS",
-      valorIdSede,
-      idPeriodoAcademico,
-      valorCodTipoConcepto,
-      valorProgramaAcademico
-    );
-
     let datos = {
       valorIdSede,
       idPeriodoAcademico,
       valorCodTipoConcepto,
       valorProgramaAcademico,
     };
-    console.log("ESTOS SON LOS DATOS CONCEPTOS::", datosConceptos);
+
     traerConceptos(datos);
   }, [
     valorIdSede,
@@ -66,29 +58,26 @@ const Filtros = ({
   ]);
 
   useEffect(() => {
-    console.log(
-      "aqui hay que actualizar los PROGRAMAS",
-      valorIdSede,
-      idPeriodoAcademico,
-      valorCodTipoConcepto
-    );
     let datos = {
       valorIdSede,
       idPeriodoAcademico,
       valorCodTipoConcepto,
     };
     traerProgramaAcademico(datos);
+    setGatillo(!gatillo);
+    console.log(datos);
   }, [valorIdSede, valorCodTipoConcepto, idPeriodoAcademico]);
 
   const traerProgramaAcademico = (data) => {
-    console.log("antes de mandar", data);
     clienteAxios("/programaacademico", {
       method: "POST",
       data: data,
     })
       .then((respuesta) => {
         setDatosProgramaAcademico(respuesta.data);
-        console.log("PRORGAMAS ACADEMICOS", datosProgramaAcademico);
+        console.log("estos son los programas academicos:", respuesta.data);
+        console.log("ESTE ES EL PRIMER VALOR:", respuesta.data[0].idPrograma);
+        setValorProgramaAcademico(respuesta.data[0].idPrograma);
       })
       .catch((error) => {
         console.log(error);
@@ -98,6 +87,8 @@ const Filtros = ({
     clienteAxios("/conceptos", { method: "POST", data: data })
       .then((respuesta) => {
         setDatosConceptos(respuesta.data);
+        console.log("valores de conceptos:", respuesta.data);
+        setValorCodConcepto(respuesta.data[0].codConcepto);
       })
       .catch((error) => {
         console.log(error);
@@ -127,7 +118,15 @@ const Filtros = ({
   };
 
   const traerFechasVencimientos = () => {
-    console.log("TODOS:", valorCodConcepto, valorCodTipoConcepto, valorIdSede);
+    console.log(
+      "DATOS PARA TRAER FECHAS:",
+      valorCodConcepto,
+      valorCodTipoConcepto,
+      valorIdSede,
+      valorProgramaAcademico,
+      idPeriodoAcademico
+    );
+
     clienteAxios("/fechasvencimientos", {
       method: "POST",
       data: {
@@ -139,6 +138,7 @@ const Filtros = ({
       },
     })
       .then((respuesta) => {
+        console.log("FECHASSSSSSSS::", respuesta.data);
         setInfoFechasVencimientos(respuesta.data);
         setVigentes("todos");
       })
@@ -265,6 +265,7 @@ const Filtros = ({
             size="sm"
             name="idPrograma"
             id="idPrograma"
+            value={valorProgramaAcademico}
             onChange={(e) => {
               setValorProgramaAcademico(e.target.value);
               setGatillo(!gatillo);
@@ -289,6 +290,7 @@ const Filtros = ({
             size="sm"
             id="concepto"
             name="concepto"
+            value={valorCodConcepto}
             onClick={(e) => {
               setCodConcepto(e.target.value);
             }}
