@@ -13,6 +13,7 @@ import clienteAxios from "../../config/axios";
 import { FaSearch } from "react-icons/fa";
 
 const Filtros = ({
+  setInfoConceptosConfiguracion,
   setInfoFechasVencimientos,
   setCodConcepto,
   setIdPeriodoAcademico,
@@ -27,8 +28,16 @@ const Filtros = ({
   const [datosProgramaAcademico, setDatosProgramaAcademico] = useState([]);
   const [valorProgramaAcademico, setValorProgramaAcademico] = useState(0);
   const [valorCodConcepto, setValorCodConcepto] = useState(0);
+
+  /*********************************************************************************/
   const [valorCodTipoConcepto, setValorCodTipoConcepto] = useState(0);
   const [valorIdSede, setValorIdSede] = useState(0);
+  const [valorIdMes, setValorIdMes] = useState(0);
+  const [valorAnio, setValorAnio] = useState(0);
+  const [valorIdPeriodoAcademico, setValorIdPeriodoAcademico] = useState(0);
+
+  /******************************************************************************************/
+
   const [vigentes, setVigentes] = useState("");
   const [gatillo, setGatillo] = useState(false);
   useEffect(() => {
@@ -38,8 +47,16 @@ const Filtros = ({
     // traerProgramaAcademico();
   }, []);
   useEffect(() => {
-    traerFechasVencimientos();
-  }, [valorCodConcepto, idPeriodoAcademico]);
+    //traerFechasVencimientos();
+    traerConceptosConfiguracion();
+    console.log("VALOR DE IDMES", valorIdMes);
+  }, [
+    valorIdPeriodoAcademico,
+    valorIdSede,
+    valorCodTipoConcepto,
+    valorIdMes,
+    valorAnio,
+  ]);
 
   useEffect(() => {
     let datos = {
@@ -65,7 +82,6 @@ const Filtros = ({
     };
     traerProgramaAcademico(datos);
     setGatillo(!gatillo);
-    console.log(datos);
   }, [valorIdSede, valorCodTipoConcepto, idPeriodoAcademico]);
 
   const traerProgramaAcademico = (data) => {
@@ -87,7 +103,7 @@ const Filtros = ({
     clienteAxios("/conceptos", { method: "POST", data: data })
       .then((respuesta) => {
         setDatosConceptos(respuesta.data);
-        console.log("valores de conceptos:", respuesta.data);
+
         setValorCodConcepto(respuesta.data[0].codConcepto);
       })
       .catch((error) => {
@@ -117,16 +133,27 @@ const Filtros = ({
       });
   };
 
-  const traerFechasVencimientos = () => {
-    console.log(
-      "DATOS PARA TRAER FECHAS:",
-      valorCodConcepto,
-      valorCodTipoConcepto,
-      valorIdSede,
-      valorProgramaAcademico,
-      idPeriodoAcademico
-    );
+  const traerConceptosConfiguracion = () => {
+    clienteAxios("/conceptosconfiguracion", {
+      method: "POST",
+      data: {
+        idSede: valorIdSede,
+        idPeriodoAcademico: valorIdPeriodoAcademico,
+        codTipoConcepto: valorCodTipoConcepto,
+        mes: valorIdMes,
+        anio: valorAnio,
+      },
+    })
+      .then((respuesta) => {
+        setInfoConceptosConfiguracion(respuesta.data);
+        console.log(respuesta.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
+  const traerFechasVencimientos = () => {
     clienteAxios("/fechasvencimientos", {
       method: "POST",
       data: {
@@ -138,7 +165,6 @@ const Filtros = ({
       },
     })
       .then((respuesta) => {
-        console.log("FECHASSSSSSSS::", respuesta.data);
         setInfoFechasVencimientos(respuesta.data);
         setVigentes("todos");
       })
@@ -175,6 +201,22 @@ const Filtros = ({
     { id: new Date().getFullYear() },
     { id: new Date().getFullYear() + 1 },
   ];
+
+  const meses = [
+    { idMes: 1, nombre: "ENERO" },
+    { idMes: 2, nombre: "FEBRERO" },
+    { idMes: 3, nombre: "MARZO" },
+    { idMes: 4, nombre: "ABRIL" },
+    { idMes: 5, nombre: "MAYO" },
+    { idMes: 6, nombre: "JUNIO" },
+    { idMes: 7, nombre: "JULIO" },
+    { idMes: 8, nombre: "AGOSTO" },
+    { idMes: 9, nombre: "SEPTIEMBRE" },
+    { idMes: 10, nombre: "OCTUBRE" },
+    { idMes: 11, nombre: "NOVIEMBRE" },
+    { idMes: 12, nombre: "DICIEMBRE" },
+  ];
+
   useEffect(() => {
     traerFechasVencimientos();
   }, [refrescar]);
@@ -218,11 +260,11 @@ const Filtros = ({
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel fontSize={14}>Año</FormLabel>
+          <FormLabel fontSize={14}>Período académico</FormLabel>
           <Select
             size="sm"
             onChange={(e) => {
-              setIdPeriodoAcademico(e.target.value);
+              setValorIdPeriodoAcademico(e.target.value);
               setGatillo(!gatillo);
             }}
           >
@@ -259,7 +301,45 @@ const Filtros = ({
             )}
           </Select>
         </FormControl>
+
         <FormControl>
+          <FormLabel fontSize={14}>Mes</FormLabel>
+          <Select
+            size="sm"
+            name="valorIdMes"
+            id="valorIdMes"
+            onChange={(e) => {
+              setValorIdMes(e.target.value);
+              setGatillo(!gatillo);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {meses.map(({ idMes, nombre }) => (
+              <option key={idMes} value={idMes} style={{ color: "black" }}>
+                {idMes + " | " + nombre}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel fontSize={14}>Año</FormLabel>
+          <Select
+            size="sm"
+            onChange={(e) => {
+              setValorAnio(e.target.value);
+              setGatillo(!gatillo);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {años.map(({ id }) => (
+              <option key={id} value={id} style={{ color: "black" }}>
+                {id}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        {/*  <FormControl>
           <FormLabel fontSize={14}>Programa Académico</FormLabel>
           <Select
             size="sm"
@@ -283,8 +363,8 @@ const Filtros = ({
               )
             )}
           </Select>
-        </FormControl>
-        <FormControl>
+              </FormControl>*/}
+        {/* <FormControl>
           <FormLabel fontSize={14}>Concepto</FormLabel>
           <Select
             size="sm"
@@ -310,7 +390,7 @@ const Filtros = ({
               </option>
             ))}
           </Select>
-        </FormControl>
+            </FormControl>*/}
         <Box>
           <Button
             w={{ base: "100%" }}
@@ -320,13 +400,13 @@ const Filtros = ({
             size="xs"
             // w="100px"
             h="35px"
-            onClick={traerFechasVencimientos}
+            onClick={traerConceptosConfiguracion}
           >
             Buscar
           </Button>
         </Box>
       </Stack>
-      <Box w="80%" mx="auto" mt={2}>
+      {/* <Box w="80%" mx="auto" mt={2}>
         <RadioGroup
           defaultValue="todos"
           onChange={setVigentes}
@@ -338,7 +418,7 @@ const Filtros = ({
             <Radio value="vigentes">Vigentes</Radio>
           </Stack>
         </RadioGroup>
-      </Box>
+          </Box>*/}
     </>
   );
 };
