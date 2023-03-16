@@ -25,12 +25,12 @@ export default function Home() {
         refrescar={refrescar}
       />
       <TablaPrincipal infoConceptosConfiguracion={infoConceptosConfiguracion} />
-      <NuevoPrecio
+      {/* <NuevoPrecio
         refrescar={refrescar}
         setRefrescar={setRefrescar}
         codConcepto={codConcepto}
         idPeriodoAcademico={idPeriodoAcademico}
-      />
+  />*/}
     </>
   );
 }

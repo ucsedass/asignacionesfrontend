@@ -101,6 +101,7 @@ const TablaPrincipal = ({
     },
   ];*/
 
+  /************************  USE STATE DE PRECIO  ********************************************* */
   const [modalAgregarPrecio, setModalAgregarPrecio] = useState(false);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
