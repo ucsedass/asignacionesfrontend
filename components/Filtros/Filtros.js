@@ -6,8 +6,6 @@ import {
   Select,
   Stack,
   Button,
-  RadioGroup,
-  Radio,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 import { FaSearch } from "react-icons/fa";
@@ -15,7 +13,6 @@ import { FaSearch } from "react-icons/fa";
 const Filtros = ({
   setInfoConceptosConfiguracion,
   setInfoFechasVencimientos,
-  setCodConcepto,
   setIdPeriodoAcademico,
   idPeriodoAcademico,
   refrescar,
@@ -49,7 +46,6 @@ const Filtros = ({
   useEffect(() => {
     //traerFechasVencimientos();
     traerConceptosConfiguracion();
-    console.log("VALOR DE IDMES", valorIdMes);
   }, [
     valorIdPeriodoAcademico,
     valorIdSede,
@@ -91,8 +87,6 @@ const Filtros = ({
     })
       .then((respuesta) => {
         setDatosProgramaAcademico(respuesta.data);
-        console.log("estos son los programas academicos:", respuesta.data);
-        console.log("ESTE ES EL PRIMER VALOR:", respuesta.data[0].idPrograma);
         setValorProgramaAcademico(respuesta.data[0].idPrograma);
       })
       .catch((error) => {
@@ -218,10 +212,6 @@ const Filtros = ({
   ];
 
   useEffect(() => {
-    traerFechasVencimientos();
-  }, [refrescar]);
-
-  useEffect(() => {
     if (vigentes === "vigentes") {
       traerFechasVencimientosVigentes();
     } else {
@@ -265,6 +255,7 @@ const Filtros = ({
             size="sm"
             onChange={(e) => {
               setValorIdPeriodoAcademico(e.target.value);
+              setIdPeriodoAcademico(e.target.value);
               setGatillo(!gatillo);
             }}
           >

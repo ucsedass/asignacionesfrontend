@@ -26,82 +26,15 @@ import {
 } from "react-icons/fa";
 import Moment from "moment";
 import { estiloTablas } from "../estiloTablas";
+import clienteAxios from "../../config/axios";
 
 const TablaPrincipal = ({
-  infoFechasVencimientos,
   infoConceptosConfiguracion,
+  idPeriodoAcademico,
+  setRefrescar,
+  refrescar,
 }) => {
-  /*const columns = [
-    {
-      name: (
-        <h5>
-          <strong>Fecha Inicio</strong>
-        </h5>
-      ),
-      cell: (row) => (
-        <strong>
-          {Moment(row.FechaInicioVigenciaPrecio)
-            .add(1, "days")
-            .format("DD-MM-YYYY")}
-        </strong>
-      ),
-    },
-    {
-      name: (
-        <h5>
-          <strong>Fecha Fin</strong>
-        </h5>
-      ),
-      cell: (row) => (
-        <strong>
-          {Moment(row.FechaFinVigenciaPrecio)
-            .add(1, "days")
-            .format("DD-MM-YYYY")}
-        </strong>
-      ),
-    },
-    {
-      name: (
-        <h5>
-          <strong>1º Vto</strong>
-        </h5>
-      ),
-      cell: (row) => (
-        <strong>{"$ " + parseFloat(row.PrecioVto1).toFixed(2)}</strong>
-      ),
-    },
-    {
-      name: (
-        <h5>
-          <strong>2º Vto</strong>
-        </h5>
-      ),
-      cell: (row) => (
-        <strong>{"$ " + parseFloat(row.PrecioVto2).toFixed(2)}</strong>
-      ),
-    },
-    {
-      name: (
-        <h5>
-          <strong>3º Vto</strong>
-        </h5>
-      ),
-      cell: (row) => (
-        <strong>{"$ " + parseFloat(row.PrecioVto3).toFixed(2)}</strong>
-      ),
-    },
-
-    {
-      name: (
-        <h5>
-          <strong>3º Vto</strong>
-        </h5>
-      ),
-      cell: (row) => parseFloat(row.PrecioVto3).toFixed(2),
-    },
-  ];*/
-
-  /************************  USE STATE DE PRECIO  ********************************************* */
+  /************************  USE STATE DE PRECIO  **********************************************/
   const [modalAgregarPrecio, setModalAgregarPrecio] = useState(false);
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
@@ -109,6 +42,16 @@ const TablaPrincipal = ({
   const [precio2v, setPrecio2v] = useState("");
   const [precio3v, setPrecio3v] = useState("");
   const [error, setError] = useState(true);
+
+  const [codConcepto, setCodConcepto] = useState(0);
+
+  const [mensaje, setMensaje] = useState("");
+  const [ok, setOk] = useState(false);
+  /************************************ MODAL CONFIRMACION ***************************************************** */
+
+  const [modalConfirmacion, setModalConfirmacion] = useState(false);
+  const [modalExito, setModalExito] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   const validarCampos = () => {
     if ([precio1v, precio2v, precio3v, fechaInicio, fechaFin].includes("")) {
@@ -229,6 +172,8 @@ const TablaPrincipal = ({
           size="sm"
           onClick={() => {
             setModalAgregarPrecio(true);
+
+            setCodConcepto(row.codConcepto);
           }}
         >
           Editar
@@ -236,6 +181,48 @@ const TablaPrincipal = ({
       ),
     },
   ];
+
+  const guardarFechaPrecio = () => {
+    var data = {
+      codConcepto: codConcepto,
+      idPeriodoAcademico: idPeriodoAcademico,
+      fechaInicioVigencia: fechaInicio,
+      fechaFinVigencia: fechaFin,
+      importeVto1: precio1v,
+      importeVto2: precio2v,
+      importeVto3: precio3v,
+      idUsuario: 53,
+      ok,
+      mensaje,
+    };
+    console.log("datos para mandar al sp:", data);
+
+    clienteAxios("/agregarfechasvencimientos", {
+      method: "POST",
+      data: data,
+    })
+      .then((respuesta) => {
+        console.log("Exito:", respuesta.data.returnValue);
+        console.log("Rta::", respuesta.data.output);
+        setMensaje(respuesta.data.output.mensaje);
+
+        if (respuesta.data.returnValue === 1) {
+          setRefrescar(!refrescar);
+          setModalExito(true);
+          setModalConfirmacion(false);
+          setModalAgregarPrecio(false);
+        } else {
+          setModalError(true);
+          setModalConfirmacion(false);
+          setModalAgregarPrecio(false);
+          setModalExito(false);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+        setModalError(true);
+      });
+  };
 
   return (
     <>
@@ -353,6 +340,108 @@ const TablaPrincipal = ({
               </Button>
             </Box>
           </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={modalConfirmacion}
+        onClose={() => {
+          setModalConfirmacion(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalBody>
+            <Center fontSize={18}>Confirmar agregar registro.</Center>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              size="xs"
+              colorScheme="red"
+              onClick={() => {
+                setModalConfirmacion(false);
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              size="xs"
+              ml={3}
+              colorScheme="blue"
+              onClick={guardarFechaPrecio}
+            >
+              Aceptar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={modalExito}
+        onClose={() => {
+          setModalExito(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent bgColor={"white"}>
+          <ModalBody>
+            <Center>
+              <VStack>
+                <Icon w={20} h={20} color="green.500" as={FaRegCheckCircle} />
+                <Text>Datos guardados.</Text>
+              </VStack>
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              w="100%"
+              size="xs"
+              colorScheme="green"
+              onClick={() => {
+                setModalExito(false);
+              }}
+            >
+              OK
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/*Modal error*/}
+      <Modal
+        isOpen={modalError}
+        onClose={() => {
+          setModalError(false);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <Center>
+              <VStack>
+                <Icon w={20} h={20} color="red.500" as={FaExclamationCircle} />
+                {codConcepto === 0 ||
+                  (codConcepto === "0" && <Text>Seleccionar concepto.</Text>)}
+                {idPeriodoAcademico === 0 ||
+                  (idPeriodoAcademico === "0" && <Text>Seleccionar año.</Text>)}
+                {<Text>{mensaje}</Text>}
+              </VStack>
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme={"red"}
+              size="xm"
+              w="100%"
+              onClick={() => {
+                setModalError(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
