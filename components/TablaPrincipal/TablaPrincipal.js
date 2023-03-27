@@ -43,12 +43,14 @@ const TablaPrincipal = ({
   const [precio3v, setPrecio3v] = useState("");
   const [error, setError] = useState(true);
 
-  const [codConcepto, setCodConcepto] = useState(0);
+  const [valorConcepto, setValorConcepto] = useState("");
+  const [valorProgramaAcademico, setValorProgramaAcademico] = useState("");
 
+  /***********************************************************************************************/
+  const [codConcepto, setCodConcepto] = useState(0);
   const [mensaje, setMensaje] = useState("");
   const [ok, setOk] = useState(false);
   /************************************ MODAL CONFIRMACION ***************************************************** */
-
   const [modalConfirmacion, setModalConfirmacion] = useState(false);
   const [modalExito, setModalExito] = useState(false);
   const [modalError, setModalError] = useState(false);
@@ -174,6 +176,8 @@ const TablaPrincipal = ({
             setModalAgregarPrecio(true);
 
             setCodConcepto(row.codConcepto);
+            setValorConcepto(row.DescripcionConcepto);
+            setValorProgramaAcademico(row.NombreProgramaAcademico);
           }}
         >
           Editar
@@ -197,31 +201,53 @@ const TablaPrincipal = ({
     };
     console.log("datos para mandar al sp:", data);
 
-    clienteAxios("/agregarfechasvencimientos", {
-      method: "POST",
-      data: data,
-    })
-      .then((respuesta) => {
-        console.log("Exito:", respuesta.data.returnValue);
-        console.log("Rta::", respuesta.data.output);
-        setMensaje(respuesta.data.output.mensaje);
-
-        if (respuesta.data.returnValue === 1) {
-          setRefrescar(!refrescar);
-          setModalExito(true);
-          setModalConfirmacion(false);
-          setModalAgregarPrecio(false);
-        } else {
-          setModalError(true);
-          setModalConfirmacion(false);
-          setModalAgregarPrecio(false);
-          setModalExito(false);
-        }
+    if (
+      data.fechaInicioVigencia !== "" &&
+      data.fechaFinVigencia !== "" &&
+      data.importeVto1 !== "" &&
+      data.importeVto2 !== "" &&
+      data.importeVto3 !== ""
+    ) {
+      clienteAxios("/agregarfechasvencimientos", {
+        method: "POST",
+        data: data,
       })
-      .catch((error) => {
-        console.log("Error", error);
-        setModalError(true);
-      });
+        .then((respuesta) => {
+          console.log("Exito:", respuesta.data.returnValue);
+          console.log("Rta::", respuesta.data.output);
+          setMensaje(respuesta.data.output.mensaje);
+
+          if (respuesta.data.returnValue === 1) {
+            setRefrescar(!refrescar);
+            setModalExito(true);
+            setModalConfirmacion(false);
+            setModalAgregarPrecio(false);
+            // limpiarPreciosFechas();
+          } else {
+            setModalError(true);
+            setModalConfirmacion(false);
+            setModalAgregarPrecio(false);
+            setModalExito(false);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+          setModalError(true);
+        });
+    } else {
+      setMensaje("COMPLETE TODOS LOS CAMPOS");
+      setModalError(true);
+      setModalConfirmacion(false);
+      console.log("complerte los dasda");
+    }
+  };
+
+  const limpiarPreciosFechas = () => {
+    setFechaInicio("");
+    setFechaFin("");
+    setPrecio1v("");
+    setPrecio2v("");
+    setPrecio3v("");
   };
 
   return (
@@ -236,6 +262,7 @@ const TablaPrincipal = ({
           defaultSortFieldId={1}
           customStyles={estiloTablas}
           noDataComponent="No se encontraron datos."
+          highlightOnHover
         />
       </Box>
 
@@ -244,14 +271,39 @@ const TablaPrincipal = ({
         onClose={() => {
           setModalAgregarPrecio(false);
         }}
-        size="800px"
+        size="200px"
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent mt="200px" width="60%">
+          <Center mt={4}>
+            <FormLabel mb="0px">ASIGNACION DE FECHAS DE VENCIMIENTOS</FormLabel>
+          </Center>
           <ModalBody>
             <Stack
               direction={{ base: "column", sm: "column", lg: "row" }}
-              w="80%"
+              w="100%"
+              mx="auto"
+              spacing={2}
+              border="solid 2px #F1F1F1"
+              p={2}
+              mt={5}
+            >
+              <FormControl>
+                <FormLabel fontSize={14}>Concepto</FormLabel>
+                <Input size="xs" readOnly={true} value={valorConcepto} />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontSize={14}>Programa académico</FormLabel>
+                <Input
+                  size="xs"
+                  readOnly={true}
+                  value={valorProgramaAcademico}
+                />
+              </FormControl>
+            </Stack>
+            <Stack
+              direction={{ base: "column", sm: "column", lg: "row" }}
+              w="100%"
               mx="auto"
               spacing={2}
               border="solid 2px #F1F1F1"
@@ -268,6 +320,7 @@ const TablaPrincipal = ({
                   onChange={(e) => {
                     setFechaInicio(e.target.value);
                   }}
+                  value={fechaInicio}
                 />
               </FormControl>
               <FormControl>
@@ -280,6 +333,7 @@ const TablaPrincipal = ({
                   onChange={(e) => {
                     setFechaFin(e.target.value);
                   }}
+                  value={fechaFin}
                 />
               </FormControl>
               <FormControl>
@@ -292,6 +346,7 @@ const TablaPrincipal = ({
                   onChange={(e) => {
                     setPrecio1v(e.target.value);
                   }}
+                  value={precio1v}
                 />
               </FormControl>
               <FormControl>
@@ -304,6 +359,7 @@ const TablaPrincipal = ({
                   onChange={(e) => {
                     setPrecio2v(e.target.value);
                   }}
+                  value={precio2v}
                 />
               </FormControl>
               <FormControl>
@@ -316,10 +372,11 @@ const TablaPrincipal = ({
                   onChange={(e) => {
                     setPrecio3v(e.target.value);
                   }}
+                  value={precio3v}
                 />
               </FormControl>
             </Stack>
-            <Box w="80%" mx="auto" mt={3}>
+            <Box w="100%" mx="auto" mt={3}>
               {/* error && (
           <Box bgColor="red.400">
             <Center color="white">REVISAR DATOS</Center>

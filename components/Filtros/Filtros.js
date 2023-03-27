@@ -52,6 +52,7 @@ const Filtros = ({
     valorCodTipoConcepto,
     valorIdMes,
     valorAnio,
+    refrescar,
   ]);
 
   useEffect(() => {
@@ -140,7 +141,6 @@ const Filtros = ({
     })
       .then((respuesta) => {
         setInfoConceptosConfiguracion(respuesta.data);
-        console.log(respuesta.data);
       })
       .catch((error) => {
         console.log(error);
@@ -293,43 +293,6 @@ const Filtros = ({
           </Select>
         </FormControl>
 
-        <FormControl>
-          <FormLabel fontSize={14}>Mes</FormLabel>
-          <Select
-            size="sm"
-            name="valorIdMes"
-            id="valorIdMes"
-            onChange={(e) => {
-              setValorIdMes(e.target.value);
-              setGatillo(!gatillo);
-            }}
-          >
-            <option value={0}>--Seleccione--</option>
-            {meses.map(({ idMes, nombre }) => (
-              <option key={idMes} value={idMes} style={{ color: "black" }}>
-                {idMes + " | " + nombre}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <FormLabel fontSize={14}>Año</FormLabel>
-          <Select
-            size="sm"
-            onChange={(e) => {
-              setValorAnio(e.target.value);
-              setGatillo(!gatillo);
-            }}
-          >
-            <option value={0}>--Seleccione--</option>
-            {años.map(({ id }) => (
-              <option key={id} value={id} style={{ color: "black" }}>
-                {id}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
         {/*  <FormControl>
           <FormLabel fontSize={14}>Programa Académico</FormLabel>
           <Select
@@ -396,6 +359,53 @@ const Filtros = ({
             Buscar
           </Button>
         </Box>
+      </Stack>
+      <Stack
+        direction={{ base: "column", sm: "column", lg: "row" }}
+        w="80%"
+        mx="auto"
+        spacing={2}
+        border="solid 2px #F1F1F1"
+        p={2}
+        mt={2}
+      >
+        <FormControl>
+          <FormLabel fontSize={14}>Mes</FormLabel>
+          <Select
+            size="sm"
+            name="valorIdMes"
+            id="valorIdMes"
+            onChange={(e) => {
+              setValorIdMes(e.target.value);
+              setGatillo(!gatillo);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {meses.map(({ idMes, nombre }) => (
+              <option key={idMes} value={idMes} style={{ color: "black" }}>
+                {idMes + " | " + nombre}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel fontSize={14}>Año</FormLabel>
+          <Select
+            size="sm"
+            onChange={(e) => {
+              setValorAnio(e.target.value);
+              setGatillo(!gatillo);
+            }}
+          >
+            <option value={0}>--Seleccione--</option>
+            {años.map(({ id }) => (
+              <option key={id} value={id} style={{ color: "black" }}>
+                {id}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
       </Stack>
       {/* <Box w="80%" mx="auto" mt={2}>
         <RadioGroup
