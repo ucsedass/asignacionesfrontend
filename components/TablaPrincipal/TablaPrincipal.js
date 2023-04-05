@@ -288,26 +288,29 @@ const TablaPrincipal = ({
               mt={5}
             >
               <FormControl>
-                <FormLabel>Sede</FormLabel>
-
-                {datosFiltro.descSede}
+                <FormLabel fontSize={13}>Sede</FormLabel>
+                <FormLabel fontSize={12}>{datosFiltro.descSede}</FormLabel>
               </FormControl>
 
               <FormControl>
-                <FormLabel>Período acdémico</FormLabel>
-                {datosFiltro.descPeriodoAcademico}
+                <FormLabel fontSize={13}>Período acdémico</FormLabel>
+                <FormLabel fontSize={12}>
+                  {datosFiltro.descPeriodoAcademico}
+                </FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel>Tipo concepto</FormLabel>
-                {datosFiltro.descTipoConcepto}
+                <FormLabel fontSize={13}>Tipo concepto</FormLabel>
+                <FormLabel fontSize={12}>
+                  {datosFiltro.descTipoConcepto}
+                </FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel>Mes</FormLabel>
-                {datosFiltro.descMes}
+                <FormLabel fontSize={13}>Mes</FormLabel>
+                <FormLabel fontSize={12}>{datosFiltro.descMes}</FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel>Año</FormLabel>
-                {datosFiltro.descAnio}
+                <FormLabel fontSize={13}>Año</FormLabel>
+                <FormLabel fontSize={12}>{datosFiltro.descAnio}</FormLabel>
               </FormControl>
             </Stack>
 
