@@ -33,6 +33,7 @@ const TablaPrincipal = ({
   idPeriodoAcademico,
   setRefrescar,
   refrescar,
+  datosFiltro,
 }) => {
   /************************  USE STATE DE PRECIO  **********************************************/
   const [modalAgregarPrecio, setModalAgregarPrecio] = useState(false);
@@ -199,7 +200,6 @@ const TablaPrincipal = ({
       ok,
       mensaje,
     };
-    console.log("datos para mandar al sp:", data);
 
     if (
       data.fechaInicioVigencia !== "" &&
@@ -238,7 +238,6 @@ const TablaPrincipal = ({
       setMensaje("COMPLETE TODOS LOS CAMPOS");
       setModalError(true);
       setModalConfirmacion(false);
-      console.log("complerte los dasda");
     }
   };
 
@@ -280,7 +279,40 @@ const TablaPrincipal = ({
           </Center>
           <ModalBody>
             <Stack
-              direction={{ base: "column", sm: "column", lg: "row" }}
+              direction={{ base: "row", sm: "column", lg: "row" }}
+              w="100%"
+              mx="auto"
+              spacing={2}
+              border="solid 2px #F1F1F1"
+              p={2}
+              mt={5}
+            >
+              <FormControl>
+                <FormLabel>Sede</FormLabel>
+
+                {datosFiltro.descSede}
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Período acdémico</FormLabel>
+                {datosFiltro.descPeriodoAcademico}
+              </FormControl>
+              <FormControl>
+                <FormLabel>Tipo concepto</FormLabel>
+                {datosFiltro.descTipoConcepto}
+              </FormControl>
+              <FormControl>
+                <FormLabel>Mes</FormLabel>
+                {datosFiltro.descMes}
+              </FormControl>
+              <FormControl>
+                <FormLabel>Año</FormLabel>
+                {datosFiltro.descAnio}
+              </FormControl>
+            </Stack>
+
+            <Stack
+              direction={{ base: "row", sm: "column", lg: "row" }}
               w="100%"
               mx="auto"
               spacing={2}
@@ -290,15 +322,11 @@ const TablaPrincipal = ({
             >
               <FormControl>
                 <FormLabel fontSize={14}>Concepto</FormLabel>
-                <Input size="xs" readOnly={true} value={valorConcepto} />
+                <FormLabel>{valorConcepto}</FormLabel>
               </FormControl>
               <FormControl>
                 <FormLabel fontSize={14}>Programa académico</FormLabel>
-                <Input
-                  size="xs"
-                  readOnly={true}
-                  value={valorProgramaAcademico}
-                />
+                <FormLabel>{valorProgramaAcademico}</FormLabel>
               </FormControl>
             </Stack>
             <Stack

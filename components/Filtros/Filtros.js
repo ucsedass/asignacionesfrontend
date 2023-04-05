@@ -16,6 +16,7 @@ const Filtros = ({
   setIdPeriodoAcademico,
   idPeriodoAcademico,
   refrescar,
+  setDatosFiltro,
 }) => {
   const [datosSedes, setDatosSedes] = useState([]);
   const [datosConceptos, setDatosConceptos] = useState([
@@ -44,8 +45,36 @@ const Filtros = ({
     // traerProgramaAcademico();
   }, []);
   useEffect(() => {
-    //traerFechasVencimientos();
     traerConceptosConfiguracion();
+
+    console.log(datosTipoConceptos);
+
+    let descripcionSede = datosSedes.filter(
+      (x) => x.idSede === parseInt(valorIdSede)
+    );
+
+    let descripcionTipoConcepto = datosTipoConceptos.filter(
+      (x) => x.codTipoConcepto === parseInt(valorCodTipoConcepto)
+    );
+
+    let descripcionMes = meses.filter((x) => x.idMes === parseInt(valorIdMes));
+
+    setDatosFiltro({
+      descSede:
+        datosSedes.length === 0 || valorIdSede === 0
+          ? ""
+          : descripcionSede[0].Nombre,
+      descPeriodoAcademico: valorIdPeriodoAcademico,
+      descTipoConcepto:
+        datosTipoConceptos.length === 0 || valorCodTipoConcepto === 0
+          ? ""
+          : descripcionTipoConcepto[0].DescripcionTipoConcepto,
+      descMes:
+        descripcionMes.length === 0 || valorIdMes === 0
+          ? ""
+          : descripcionMes[0].nombre,
+      descAnio: valorAnio,
+    });
   }, [
     valorIdPeriodoAcademico,
     valorIdSede,
@@ -292,59 +321,6 @@ const Filtros = ({
             )}
           </Select>
         </FormControl>
-
-        {/*  <FormControl>
-          <FormLabel fontSize={14}>Programa Académico</FormLabel>
-          <Select
-            size="sm"
-            name="idPrograma"
-            id="idPrograma"
-            value={valorProgramaAcademico}
-            onChange={(e) => {
-              setValorProgramaAcademico(e.target.value);
-              setGatillo(!gatillo);
-            }}
-          >
-            {datosProgramaAcademico.map(
-              ({ idPrograma, NombreProgramaAcademico }) => (
-                <option
-                  key={idPrograma}
-                  value={idPrograma}
-                  style={{ color: "black" }}
-                >
-                  {NombreProgramaAcademico}
-                </option>
-              )
-            )}
-          </Select>
-              </FormControl>*/}
-        {/* <FormControl>
-          <FormLabel fontSize={14}>Concepto</FormLabel>
-          <Select
-            size="sm"
-            id="concepto"
-            name="concepto"
-            value={valorCodConcepto}
-            onClick={(e) => {
-              setCodConcepto(e.target.value);
-            }}
-            onChange={(e) => {
-              setValorCodConcepto(e.target.value);
-              setCodConcepto(e.target.value);
-              setGatillo(!gatillo);
-            }}
-          >
-            {datosConceptos.map(({ codConcepto, DescripcionConcepto }) => (
-              <option
-                key={codConcepto}
-                value={codConcepto}
-                style={{ color: "black" }}
-              >
-                {codConcepto + " | " + DescripcionConcepto}
-              </option>
-            ))}
-          </Select>
-            </FormControl>*/}
         <Box>
           <Button
             w={{ base: "100%" }}
@@ -407,19 +383,6 @@ const Filtros = ({
           </Select>
         </FormControl>
       </Stack>
-      {/* <Box w="80%" mx="auto" mt={2}>
-        <RadioGroup
-          defaultValue="todos"
-          onChange={setVigentes}
-          value={vigentes}
-          size="sm"
-        >
-          <Stack direction="row">
-            <Radio value="todos">Todos</Radio>
-            <Radio value="vigentes">Vigentes</Radio>
-          </Stack>
-        </RadioGroup>
-          </Box>*/}
     </>
   );
 };
