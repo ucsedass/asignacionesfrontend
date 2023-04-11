@@ -6,6 +6,7 @@ import {
   Select,
   Stack,
   Button,
+  Heading,
 } from "@chakra-ui/react";
 import clienteAxios from "../../config/axios";
 import { FaSearch } from "react-icons/fa";
@@ -260,7 +261,7 @@ const Filtros = ({
         mt={2}
       >
         <FormControl>
-          <FormLabel fontSize={14}>Sede</FormLabel>
+          <Heading fontSize={14}>Sede</Heading>
           <Select
             size="sm"
             name="idSede"
@@ -279,7 +280,7 @@ const Filtros = ({
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel fontSize={14}>Período académico</FormLabel>
+          <Heading fontSize={14}>Período académico</Heading>
           <Select
             size="sm"
             onChange={(e) => {
@@ -297,7 +298,7 @@ const Filtros = ({
           </Select>
         </FormControl>
         <FormControl>
-          <FormLabel fontSize={14}>Tipo concepto</FormLabel>
+          <Heading fontSize={14}>Tipo concepto</Heading>
           <Select
             size="sm"
             name="codTipoConcepto"
@@ -326,7 +327,7 @@ const Filtros = ({
             w={{ base: "100%" }}
             rightIcon={<FaSearch />}
             colorScheme="orange"
-            mt={7}
+            mt={4}
             size="xs"
             // w="100px"
             h="35px"
@@ -346,7 +347,7 @@ const Filtros = ({
         mt={2}
       >
         <FormControl>
-          <FormLabel fontSize={14}>Mes</FormLabel>
+          <Heading fontSize={14}>Mes</Heading>
           <Select
             size="sm"
             name="valorIdMes"
@@ -366,7 +367,7 @@ const Filtros = ({
         </FormControl>
 
         <FormControl>
-          <FormLabel fontSize={14}>Año</FormLabel>
+          <Heading fontSize={14}>Año</Heading>
           <Select
             size="sm"
             onChange={(e) => {

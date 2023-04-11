@@ -18,6 +18,7 @@ import {
   Icon,
   Text,
   FormControl,
+  Heading,
 } from "@chakra-ui/react";
 import {
   FaRegSave,
@@ -275,7 +276,9 @@ const TablaPrincipal = ({
         <ModalOverlay />
         <ModalContent mt="200px" width="60%">
           <Center mt={4}>
-            <FormLabel mb="0px">ASIGNACION DE FECHAS DE VENCIMIENTOS</FormLabel>
+            <Heading fontSize={17} mb="0px">
+              ASIGNACION DE FECHAS DE VENCIMIENTOS
+            </Heading>
           </Center>
           <ModalBody>
             <Stack
@@ -288,28 +291,28 @@ const TablaPrincipal = ({
               mt={5}
             >
               <FormControl>
-                <FormLabel fontSize={13}>Sede</FormLabel>
+                <Heading fontSize={13}>Sede</Heading>
                 <FormLabel fontSize={12}>{datosFiltro.descSede}</FormLabel>
               </FormControl>
 
               <FormControl>
-                <FormLabel fontSize={13}>Período acdémico</FormLabel>
+                <Heading fontSize={13}>Período acdémico</Heading>
                 <FormLabel fontSize={12}>
                   {datosFiltro.descPeriodoAcademico}
                 </FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={13}>Tipo concepto</FormLabel>
+                <Heading fontSize={13}>Tipo concepto</Heading>
                 <FormLabel fontSize={12}>
                   {datosFiltro.descTipoConcepto}
                 </FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={13}>Mes</FormLabel>
+                <Heading fontSize={13}>Mes</Heading>
                 <FormLabel fontSize={12}>{datosFiltro.descMes}</FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={13}>Año</FormLabel>
+                <Heading fontSize={13}>Año</Heading>
                 <FormLabel fontSize={12}>{datosFiltro.descAnio}</FormLabel>
               </FormControl>
             </Stack>
@@ -324,12 +327,12 @@ const TablaPrincipal = ({
               mt={5}
             >
               <FormControl>
-                <FormLabel fontSize={14}>Concepto</FormLabel>
-                <FormLabel>{valorConcepto}</FormLabel>
+                <Heading fontSize={13}>Concepto</Heading>
+                <FormLabel fontSize={12}>{valorConcepto}</FormLabel>
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={14}>Programa académico</FormLabel>
-                <FormLabel>{valorProgramaAcademico}</FormLabel>
+                <Heading fontSize={13}>Programa académico</Heading>
+                <FormLabel fontSize={12}>{valorProgramaAcademico}</FormLabel>
               </FormControl>
             </Stack>
             <Stack
@@ -342,7 +345,9 @@ const TablaPrincipal = ({
               mt={5}
             >
               <FormControl>
-                <FormLabel fontSize={14}>Fecha Inicio</FormLabel>
+                <Heading fontSize={13} mb={1}>
+                  Fecha Inicio
+                </Heading>
                 <Input
                   isInvalid={fechaFin <= fechaInicio || fechaInicio === ""}
                   size="xs"
@@ -355,7 +360,9 @@ const TablaPrincipal = ({
                 />
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={14}>Fecha Fin</FormLabel>
+                <Heading fontSize={13} mb={1}>
+                  Fecha Fin
+                </Heading>
                 <Input
                   isInvalid={fechaFin <= fechaInicio || fechaFin === ""}
                   size="xs"
@@ -368,7 +375,9 @@ const TablaPrincipal = ({
                 />
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={14}>1º Vencimiento</FormLabel>
+                <Heading fontSize={13} mb={1}>
+                  1º Vencimiento
+                </Heading>
                 <Input
                   isInvalid={precio1v <= 0 || precio1v === ""}
                   type="number"
@@ -381,7 +390,9 @@ const TablaPrincipal = ({
                 />
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={14}>2º Vencimiento</FormLabel>
+                <Heading fontSize={13} mb={1}>
+                  2º Vencimiento
+                </Heading>
                 <Input
                   isInvalid={precio2v <= 0 || precio2v === ""}
                   type="number"
@@ -394,7 +405,9 @@ const TablaPrincipal = ({
                 />
               </FormControl>
               <FormControl>
-                <FormLabel fontSize={14}>3º Vencimiento</FormLabel>
+                <Heading fontSize={13} mb={1}>
+                  3º Vencimiento
+                </Heading>
                 <Input
                   isInvalid={precio3v <= 0 || precio3v === ""}
                   type="number"
