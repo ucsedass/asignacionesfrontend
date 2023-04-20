@@ -44,6 +44,7 @@ const TablaPrincipal = ({
   const [precio2v, setPrecio2v] = useState("");
   const [precio3v, setPrecio3v] = useState("");
   const [error, setError] = useState(true);
+  const [errorFiltro, setErrorFiltro] = useState(false);
 
   const [valorConcepto, setValorConcepto] = useState("");
   const [valorProgramaAcademico, setValorProgramaAcademico] = useState("");
@@ -172,11 +173,11 @@ const TablaPrincipal = ({
     {
       cell: (row) => (
         <Button
+          disabled={errorFiltro}
           m="1"
           size="sm"
           onClick={() => {
             setModalAgregarPrecio(true);
-
             setCodConcepto(row.codConcepto);
             setValorConcepto(row.DescripcionConcepto);
             setValorProgramaAcademico(row.NombreProgramaAcademico);
@@ -249,6 +250,26 @@ const TablaPrincipal = ({
     setPrecio2v("");
     setPrecio3v("");
   };
+
+  const controlarDatosFiltro = () => {
+    if (
+      [
+        datosFiltro.descSede,
+        datosFiltro.descPeriodoAcademico,
+        datosFiltro.descTipoConcepto,
+        datosFiltro.descMes,
+      ].includes("") ||
+      datosFiltro.descAnio === "0"
+    ) {
+      setErrorFiltro(true);
+    } else {
+      setErrorFiltro(false);
+    }
+  };
+
+  useEffect(() => {
+    controlarDatosFiltro();
+  }, [datosFiltro]);
 
   return (
     <>
