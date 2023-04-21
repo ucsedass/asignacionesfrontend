@@ -62,12 +62,16 @@ const Filtros = ({
 
     setDatosFiltro({
       descSede:
-        datosSedes.length === 0 || valorIdSede === 0
+        datosSedes.length === 0 ||
+        valorIdSede === 0 ||
+        descripcionSede.length === 0
           ? ""
           : descripcionSede[0].Nombre,
       descPeriodoAcademico: valorIdPeriodoAcademico,
       descTipoConcepto:
-        datosTipoConceptos.length === 0 || valorCodTipoConcepto === 0
+        datosTipoConceptos.length === 0 ||
+        valorCodTipoConcepto === 0 ||
+        descripcionTipoConcepto.length === 0
           ? ""
           : descripcionTipoConcepto[0].DescripcionTipoConcepto,
       descMes:
