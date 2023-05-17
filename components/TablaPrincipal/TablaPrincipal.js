@@ -83,7 +83,11 @@ const TablaPrincipal = ({
           <strong>Descripcion Concepto</strong>
         </h5>
       ),
-      cell: (row) => <strong>{row.DescripcionConcepto}</strong>,
+      cell: (row) => (
+        <Text fontSize="xs" as="b">
+          {row.DescripcionConcepto}
+        </Text>
+      ),
 
       width: "500px",
     },
@@ -93,7 +97,11 @@ const TablaPrincipal = ({
           <strong>Programa académico</strong>
         </h5>
       ),
-      cell: (row) => <strong>{row.NombreProgramaAcademico}</strong>,
+      cell: (row) => (
+        <Text fontSize="xs" as="b">
+          {row.NombreProgramaAcademico}
+        </Text>
+      ),
       width: "400px",
     },
     {
@@ -103,11 +111,11 @@ const TablaPrincipal = ({
         </h5>
       ),
       cell: (row) => (
-        <strong>
+        <Text as="b">
           {row.PrecioVto1 !== null
             ? "$ " + parseFloat(row.PrecioVto1).toFixed(2)
             : "-"}
-        </strong>
+        </Text>
       ),
     },
     {
@@ -117,11 +125,11 @@ const TablaPrincipal = ({
         </h5>
       ),
       cell: (row) => (
-        <strong>
+        <Text as="b">
           {row.PrecioVto2 !== null
             ? "$ " + parseFloat(row.PrecioVto2).toFixed(2)
             : "-"}
-        </strong>
+        </Text>
       ),
     },
     {
@@ -131,11 +139,11 @@ const TablaPrincipal = ({
         </h5>
       ),
       cell: (row) => (
-        <strong>
+        <Text as="b">
           {row.PrecioVto3 !== null
             ? "$ " + parseFloat(row.PrecioVto3).toFixed(2)
             : "-"}
-        </strong>
+        </Text>
       ),
     },
     {
@@ -145,13 +153,13 @@ const TablaPrincipal = ({
         </h5>
       ),
       cell: (row) => (
-        <strong>
+        <Text as="b">
           {row.FechaInicioVigenciaPrecio !== null
             ? Moment(row.FechaInicioVigenciaPrecio)
                 .add(1, "days")
                 .format("DD-MM-YYYY")
             : "-"}
-        </strong>
+        </Text>
       ),
     },
     {
@@ -161,21 +169,22 @@ const TablaPrincipal = ({
         </h5>
       ),
       cell: (row) => (
-        <strong>
+        <Text as="b">
           {row.FechaFinVigenciaPrecio !== null
             ? Moment(row.FechaFinVigenciaPrecio)
                 .add(1, "days")
                 .format("DD-MM-YYYY")
             : "-"}
-        </strong>
+        </Text>
       ),
     },
     {
       cell: (row) => (
         <Button
+          colorScheme="blue"
           disabled={errorFiltro}
           m="1"
-          size="sm"
+          size="xs"
           onClick={() => {
             setModalAgregarPrecio(true);
             setCodConcepto(row.codConcepto);
@@ -313,28 +322,34 @@ const TablaPrincipal = ({
             >
               <FormControl>
                 <Heading fontSize={13}>Sede</Heading>
-                <FormLabel fontSize={12}>{datosFiltro.descSede}</FormLabel>
+                <FormLabel color="blue.600" fontSize={12}>
+                  {datosFiltro.descSede}
+                </FormLabel>
               </FormControl>
 
               <FormControl>
                 <Heading fontSize={13}>Período acdémico</Heading>
-                <FormLabel fontSize={12}>
+                <FormLabel color="blue.600" fontSize={12}>
                   {datosFiltro.descPeriodoAcademico}
                 </FormLabel>
               </FormControl>
               <FormControl>
                 <Heading fontSize={13}>Tipo concepto</Heading>
-                <FormLabel fontSize={12}>
+                <FormLabel color="blue.600" fontSize={12}>
                   {datosFiltro.descTipoConcepto}
                 </FormLabel>
               </FormControl>
               <FormControl>
                 <Heading fontSize={13}>Mes</Heading>
-                <FormLabel fontSize={12}>{datosFiltro.descMes}</FormLabel>
+                <FormLabel color="blue.600" fontSize={12}>
+                  {datosFiltro.descMes}
+                </FormLabel>
               </FormControl>
               <FormControl>
                 <Heading fontSize={13}>Año</Heading>
-                <FormLabel fontSize={12}>{datosFiltro.descAnio}</FormLabel>
+                <FormLabel color="blue.600" fontSize={12}>
+                  {datosFiltro.descAnio}
+                </FormLabel>
               </FormControl>
             </Stack>
 
@@ -349,11 +364,15 @@ const TablaPrincipal = ({
             >
               <FormControl>
                 <Heading fontSize={13}>Concepto</Heading>
-                <FormLabel fontSize={12}>{valorConcepto}</FormLabel>
+                <FormLabel color="blue.600" fontSize={12}>
+                  {valorConcepto}
+                </FormLabel>
               </FormControl>
               <FormControl>
                 <Heading fontSize={13}>Programa académico</Heading>
-                <FormLabel fontSize={12}>{valorProgramaAcademico}</FormLabel>
+                <FormLabel color="blue.600" fontSize={12}>
+                  {valorProgramaAcademico}
+                </FormLabel>
               </FormControl>
             </Stack>
             <Stack
@@ -370,6 +389,7 @@ const TablaPrincipal = ({
                   Fecha Inicio
                 </Heading>
                 <Input
+                  isRequired
                   isInvalid={fechaFin <= fechaInicio || fechaInicio === ""}
                   size="xs"
                   onBlur={validarCampos}
@@ -385,6 +405,7 @@ const TablaPrincipal = ({
                   Fecha Fin
                 </Heading>
                 <Input
+                  isRequired
                   isInvalid={fechaFin <= fechaInicio || fechaFin === ""}
                   size="xs"
                   onBlur={validarCampos}
@@ -400,6 +421,7 @@ const TablaPrincipal = ({
                   1º Vencimiento
                 </Heading>
                 <Input
+                  isRequired
                   isInvalid={precio1v <= 0 || precio1v === ""}
                   type="number"
                   onBlur={validarCampos}
@@ -415,6 +437,7 @@ const TablaPrincipal = ({
                   2º Vencimiento
                 </Heading>
                 <Input
+                  isRequired
                   isInvalid={precio2v <= 0 || precio2v === ""}
                   type="number"
                   onBlur={validarCampos}
@@ -430,6 +453,7 @@ const TablaPrincipal = ({
                   3º Vencimiento
                 </Heading>
                 <Input
+                  isRequired
                   isInvalid={precio3v <= 0 || precio3v === ""}
                   type="number"
                   onBlur={validarCampos}
