@@ -6,8 +6,10 @@ const Layout = (props) => {
   return (
     <>
       {/* <Nav /> */}
-      <Box h={10} bg="blue.100"></Box>
-      {props.children}
+      <Box bg="white">
+        <Box h={20} bg="blue.400"></Box>
+        {props.children}
+      </Box>
     </>
   );
 };

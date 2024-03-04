@@ -177,7 +177,7 @@ const Filtros = ({
         setInfoConceptosConfiguracion(respuesta.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Da este error:", error);
       });
   };
 
@@ -276,11 +276,17 @@ const Filtros = ({
             }}
           >
             <option value={0}>--Seleccione--</option>
-            {datosSedes.map(({ idSede, Nombre }) => (
-              <option key={idSede} value={idSede} style={{ color: "black" }}>
-                {idSede + " | " + Nombre}
-              </option>
-            ))}
+            {datosSedes.length > 0
+              ? datosSedes.map(({ idSede, Nombre }) => (
+                  <option
+                    key={idSede}
+                    value={idSede}
+                    style={{ color: "black" }}
+                  >
+                    {idSede + " | " + Nombre}
+                  </option>
+                ))
+              : null}
           </Select>
         </FormControl>
         <FormControl>
@@ -313,17 +319,19 @@ const Filtros = ({
             }}
           >
             <option value={0}>--Seleccione--</option>
-            {datosTipoConceptos.map(
-              ({ codTipoConcepto, DescripcionTipoConcepto }) => (
-                <option
-                  key={codTipoConcepto}
-                  value={codTipoConcepto}
-                  style={{ color: "black" }}
-                >
-                  {codTipoConcepto + " | " + DescripcionTipoConcepto}
-                </option>
-              )
-            )}
+            {datosTipoConceptos.length > 0
+              ? datosTipoConceptos.map(
+                  ({ codTipoConcepto, DescripcionTipoConcepto }) => (
+                    <option
+                      key={codTipoConcepto}
+                      value={codTipoConcepto}
+                      style={{ color: "black" }}
+                    >
+                      {codTipoConcepto + " | " + DescripcionTipoConcepto}
+                    </option>
+                  )
+                )
+              : null}
           </Select>
         </FormControl>
         <Box>

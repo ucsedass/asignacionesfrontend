@@ -117,6 +117,7 @@ const TablaPrincipal = ({
             : "-"}
         </Text>
       ),
+      center: true,
     },
     {
       name: (
@@ -131,6 +132,7 @@ const TablaPrincipal = ({
             : "-"}
         </Text>
       ),
+      center: true,
     },
     {
       name: (
@@ -145,6 +147,7 @@ const TablaPrincipal = ({
             : "-"}
         </Text>
       ),
+      center: true,
     },
     {
       name: (
@@ -234,11 +237,13 @@ const TablaPrincipal = ({
             setModalConfirmacion(false);
             setModalAgregarPrecio(false);
             // limpiarPreciosFechas();
+            console.log("exito 1");
           } else {
             setModalError(true);
             setModalConfirmacion(false);
             setModalAgregarPrecio(false);
             setModalExito(false);
+            console.log("exito 0");
           }
         })
         .catch((error) => {
